@@ -310,6 +310,25 @@
       .stop-controls { grid-column: 1 / -1; justify-content: flex-start; }
     }
 
+
+    .bud-item-row {
+      display: grid; grid-template-columns: 1fr 125px 100px 32px; gap: 8px; align-items: center;
+      padding: 8px 10px; border-bottom: 1px solid #EFEAE0;
+    }
+    .bud-item-row:last-child { border-bottom: none; }
+    .bud-quick-btns { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .xl-preview-row {
+      display: grid; grid-template-columns: 24px 1.6fr 120px 105px 95px; gap: 8px; align-items: center;
+      padding: 7px 8px; border-bottom: 1px solid #E8E2D5; font-size: 13px;
+    }
+    .xl-preview-row:last-child { border-bottom: none; }
+    @media (max-width: 780px) {
+      .bud-item-row { grid-template-columns: 1fr 95px 32px; }
+      .bud-item-row select { grid-column: 1 / -1; }
+      .xl-preview-row { grid-template-columns: 22px 1fr 90px; }
+      .xl-preview-row select { grid-column: 2 / -1; }
+    }
+
     /* Modal */
     .modal-backdrop {
       position: fixed; inset: 0; z-index: 100;
@@ -350,6 +369,7 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -708,31 +728,171 @@
 
     <!-- ==================== TAB 6: BUDGET & CASHFLOW ==================== -->
     <section id="tab-budget" class="tab-panel">
-      <div class="grid-3" style="margin-bottom:16px;">
+      <!-- Top KPIs -->
+      <div class="grid-4" style="margin-bottom:16px;">
         <div class="kpi">
-          <div class="kpi-lbl">Reiskosten Onderweg</div>
-          <div class="kpi-val" id="budTripTotal">€ 0</div>
-          <div class="kpi-sub" id="budTripSub">Gebaseerd op route-nachten</div>
+          <div class="kpi-lbl">Totale Kosten</div>
+          <div class="kpi-val" id="budTotalCosts">€ 0</div>
+          <div class="kpi-sub" id="budCostsSub">Reis + thuisfront (3 mnd)</div>
         </div>
         <div class="kpi">
-          <div class="kpi-lbl">Thuisfront Saldo (3 mnd)</div>
-          <div class="kpi-val" id="budHomeNet">€ 0</div>
-          <div class="kpi-sub">Inkomsten incl. vakantiegeld − vaste lasten</div>
+          <div class="kpi-lbl">Inkomsten (3 mnd)</div>
+          <div class="kpi-val" id="budTotalIncome">€ 0</div>
+          <div class="kpi-sub">Salaris, vakantiegeld &amp; posten</div>
         </div>
-        <div class="kpi" style="border-color:var(--sage); background:var(--sage-light);">
-          <div class="kpi-lbl" style="color:var(--sage-dark);">Benodigde Spaarpot</div>
-          <div class="kpi-val" id="budSaveNeeded" style="color:var(--sage-dark);">€ 0</div>
-          <div class="kpi-sub" style="color:var(--sage-dark);">Reis + eventueel tekort thuis</div>
+        <div class="kpi">
+          <div class="kpi-lbl">Spaargeld op 7 apr '27</div>
+          <div class="kpi-val" id="budTotalSavings">€ 0</div>
+          <div class="kpi-sub" id="budSavingsSub">Nu + maandelijks sparen</div>
+        </div>
+        <div class="kpi" id="budBalanceCard" style="border-color:var(--sage); background:var(--sage-light);">
+          <div class="kpi-lbl" id="budBalanceLbl" style="color:var(--sage-dark);">Eindsaldo</div>
+          <div class="kpi-val" id="budBalanceVal" style="color:var(--sage-dark);">€ 0</div>
+          <div class="kpi-sub" id="budBalanceSub" style="color:var(--sage-dark);">—</div>
         </div>
       </div>
 
+      <!-- Progress bar spaardoel -->
+      <div class="card" style="padding:16px 20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+          <div>
+            <strong style="font-size:14.5px;">Dekking totale expeditie &amp; thuisfront</strong>
+            <span class="subtitle" id="budGoalHint" style="margin-left:8px;"></span>
+          </div>
+          <span class="badge badge-sage" id="budGoalPct">0%</span>
+        </div>
+        <div class="prog-track" style="height:12px; margin-top:10px;">
+          <div class="prog-fill" id="budGoalFill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- Spaargeld & Excel Import Row -->
       <div class="grid-2">
+        <!-- Spaargeld Card -->
         <div class="card">
           <div class="card-header">
             <div>
-              <h2>1. Reiskosten Onderweg</h2>
-              <div class="subtitle">Gekoppeld aan jullie <strong id="budNightsEcho">83</strong> geplande nachten</div>
+              <h2>💰 Spaargeld &amp; Spaarplan</h2>
+              <div class="subtitle">Voeg direct spaargeld toe of pas jullie spaarbedrag aan</div>
             </div>
+            <span class="badge badge-sage" id="budMonthsBadge">— mnd tot vertrek</span>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label class="field-lbl">Huidig spaargeld voor reis (€)</label>
+              <input type="number" id="bSavingsNow" min="0" step="50" onchange="saveBudget()" />
+            </div>
+            <div>
+              <label class="field-lbl">Maandelijks bijsparen (€/mnd)</label>
+              <input type="number" id="bMonthlySave" min="0" step="50" onchange="saveBudget()" />
+            </div>
+          </div>
+
+          <div style="margin-bottom:12px;">
+            <label class="field-lbl">Snel spaargeld bijschrijven op huidige spaarpot</label>
+            <div class="bud-quick-btns">
+              <button class="btn btn-sm" onclick="quickAddSavings(100)">+ € 100</button>
+              <button class="btn btn-sm" onclick="quickAddSavings(250)">+ € 250</button>
+              <button class="btn btn-sm" onclick="quickAddSavings(500)">+ € 500</button>
+              <button class="btn btn-sm btn-primary" onclick="quickAddSavings(1000)">+ € 1.000</button>
+            </div>
+          </div>
+
+          <div class="card card-soft" style="margin:0; padding:12px; font-size:13px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+              <span>Aantal spaarmaanden t/m maart 2027:</span>
+              <input type="number" id="bSaveMonths" min="0" max="24" style="width:76px; padding:5px 8px;" onchange="saveBudget()" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Excel Import Card -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>📊 Excel-bestand importeren</h2>
+              <div class="subtitle">Upload jullie eigen Excel (.xlsx / .xls / .csv) direct in de app</div>
+            </div>
+            <button class="btn btn-sm" onclick="exportBudgetExcel()">⬇ Exporteer Excel</button>
+          </div>
+
+          <div class="card card-ochre" style="padding:12px 14px; font-size:13px; margin-bottom:12px;">
+            Kies jullie Excel-bestand vanaf je telefoon of laptop. De app leest alle posten en bedragen automatisch uit, herkent de categorie en laat je eerst kiezen wat je wilt overnemen.
+          </div>
+
+          <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+            <label class="btn btn-primary" style="cursor:pointer;">
+              📁 Kies Excel / CSV bestand
+              <input type="file" id="excelBudgetInput" accept=".xlsx,.xls,.csv" style="display:none;" onchange="handleBudgetExcel(event)" />
+            </label>
+            <button class="btn btn-sm" onclick="toggleCalcMode()" id="calcModeBtn"></button>
+          </div>
+          <div class="subtitle" id="calcModeHint" style="margin-top:8px;"></div>
+        </div>
+      </div>
+
+      <!-- Excel Preview Box (hidden until file selected) -->
+      <div id="excelPreviewCard" class="card" style="display:none; border-color:var(--sage);">
+        <div class="card-header">
+          <div>
+            <h2>Voorvertoning Excel-import</h2>
+            <div class="subtitle" id="excelPreviewSub">Vink aan welke regels je wilt importeren en controleer de categorie.</div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            <select id="excelSheetSelect" style="width:auto; display:none;" onchange="renderExcelSheetPreview()"></select>
+            <button class="btn btn-sm" onclick="closeExcelPreview()">Annuleren ✕</button>
+          </div>
+        </div>
+
+        <div id="excelPreviewList" style="border:1px solid var(--border); border-radius:12px; background:#FDFCFA; max-height:340px; overflow-y:auto; margin-bottom:12px;"></div>
+
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+          <button class="btn btn-primary" onclick="confirmExcelImport(false)">✓ Toevoegen aan eigen posten</button>
+          <button class="btn btn-ochre" onclick="confirmExcelImport(true)">↺ Vervang bestaande eigen posten</button>
+        </div>
+      </div>
+
+      <!-- Eigen Budget- & Spaarposten (ook gevuld vanuit Excel) -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>Eigen Budget- &amp; Spaarposten</h2>
+            <div class="subtitle">Voeg losse posten toe (extra spaargeld, meevallers, vaste lasten of reiskosten) — elk bedrag is direct aanpasbaar</div>
+          </div>
+          <span class="badge badge-slate" id="budItemsCount">0 posten</span>
+        </div>
+
+        <div class="card card-soft" style="padding:12px; margin-bottom:14px;">
+          <div class="add-grid" style="grid-template-columns: 2fr 1.1fr 0.9fr 0.9fr auto;">
+            <input type="text" id="newBudName" placeholder="Omschrijving (bijv. Extra spaarpot, Huur, Verkoop spullen)" />
+            <select id="newBudCat">
+              <option value="spaargeld">💰 Spaargeld / Buffer</option>
+              <option value="inkomsten">📈 Inkomsten / Meevaller</option>
+              <option value="vast">🏠 Vaste lasten thuis</option>
+              <option value="reis">🚐 Reiskosten / Voorbereiding</option>
+            </select>
+            <select id="newBudFreq">
+              <option value="once">Eenmalig (totaal)</option>
+              <option value="monthly3">Per maand (×3)</option>
+            </select>
+            <input type="number" id="newBudAmount" placeholder="Bedrag €" step="10" />
+            <button class="btn btn-primary btn-sm" onclick="addBudgetItem()">+ Toevoegen</button>
+          </div>
+        </div>
+
+        <div id="budgetItemsList"></div>
+      </div>
+
+      <!-- Standaard Schattingsblokken (optioneel aan/uit als Excel alles al bevat) -->
+      <div id="defaultCalcBlocks" class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>1. Schatting Reiskosten Onderweg</h2>
+              <div class="subtitle">Gekoppeld aan jullie <strong id="budNightsEcho">81</strong> geplande nachten</div>
+            </div>
+            <span class="badge badge-ochre" id="budCalcTripBadge">€ 0</span>
           </div>
           <div class="form-row">
             <div><label class="field-lbl">Camping per nacht (€)</label><input type="number" id="bCamp" onchange="saveBudget()" /></div>
@@ -751,9 +911,10 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2>2. Thuisfront Cashflow (Apr – Jun)</h2>
+              <h2>2. Schatting Thuisfront (Apr – Jun)</h2>
               <div class="subtitle">Maarten 1 mnd betaald, Alieke 3 mnd onbetaald, vakantiegeld mei</div>
             </div>
+            <span class="badge badge-slate" id="budCalcHomeBadge">€ 0</span>
           </div>
           <div class="form-row">
             <div><label class="field-lbl">Netto salaris tijdens verlof (totaal 3 mnd, €)</label><input type="number" id="bIncome" onchange="saveBudget()" /></div>
@@ -833,7 +994,7 @@
       <div class="card-header">
         <div>
           <h2>App &amp; Live Sync (Supabase)</h2>
-          <div class="subtitle">Werk realtime samen op twee telefoons — ook offline op de camping (v2.2 • Officiële SDK)</div>
+          <div class="subtitle">Werk realtime samen op twee telefoons — ook offline op de camping (v2.3 • Budget & Excel)</div>
         </div>
         <button class="btn btn-sm" onclick="closeSyncModal()">Sluiten ✕</button>
       </div>
@@ -1007,8 +1168,13 @@
         income: 2800,
         vacPay: 3200,
         fixed: 2200,
-        utilComp: 220
+        utilComp: 220,
+        savingsNow: 0,
+        monthlySave: 0,
+        saveMonths: 4,
+        useDefaultCalc: true
       },
+      budgetItems: [],
       contract: {
         owners: 'Maarten & Alieke Schraa',
         address: 'Hoenderloo (woning Veluwonen)',
@@ -1035,7 +1201,10 @@
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return deepClone(DEFAULT_STATE);
         const parsed = JSON.parse(raw);
-        return Object.assign(deepClone(DEFAULT_STATE), parsed);
+        const merged = Object.assign(deepClone(DEFAULT_STATE), parsed);
+        merged.budget = Object.assign(deepClone(DEFAULT_STATE.budget), parsed.budget || {});
+        if (!Array.isArray(merged.budgetItems)) merged.budgetItems = [];
+        return merged;
       } catch (e) {
         return deepClone(DEFAULT_STATE);
       }
@@ -1507,9 +1676,26 @@
       saveState();
     }
 
-    // --- RENDER BUDGET ---
+    // --- RENDER BUDGET, SPAARGELD & EXCEL IMPORT ---
+    let parsedWorkbook = null;
+    let excelPreviewRows = [];
+
+    function defaultMonthsUntilDeparture() {
+      const now = new Date();
+      const dep = new Date('2027-04-07T00:00:00');
+      const diffM = (dep.getFullYear() - now.getFullYear()) * 12 + (dep.getMonth() - now.getMonth());
+      return Math.max(0, diffM);
+    }
+
     function renderBudget() {
+      if (!state.budget) state.budget = deepClone(DEFAULT_STATE.budget);
+      if (!Array.isArray(state.budgetItems)) state.budgetItems = [];
       const b = state.budget;
+      if (b.savingsNow === undefined) b.savingsNow = 0;
+      if (b.monthlySave === undefined) b.monthlySave = 0;
+      if (b.saveMonths === undefined) b.saveMonths = defaultMonthsUntilDeparture();
+      if (b.useDefaultCalc === undefined) b.useDefaultCalc = true;
+
       document.getElementById('bCamp').value = b.camp;
       document.getElementById('bFood').value = b.food;
       document.getElementById('bFun').value = b.fun;
@@ -1520,21 +1706,141 @@
       document.getElementById('bVacPay').value = b.vacPay;
       document.getElementById('bFixed').value = b.fixed;
       document.getElementById('bUtilComp').value = b.utilComp;
+      document.getElementById('bSavingsNow').value = b.savingsNow;
+      document.getElementById('bMonthlySave').value = b.monthlySave;
+      document.getElementById('bSaveMonths').value = b.saveMonths;
+
+      const autoM = defaultMonthsUntilDeparture();
+      document.getElementById('budMonthsBadge').textContent = `~${autoM} mnd tot vertrek`;
+
+      // Toggle default calc blocks visibility
+      const useCalc = b.useDefaultCalc !== false;
+      document.getElementById('defaultCalcBlocks').style.display = useCalc ? '' : 'none';
+      document.getElementById('calcModeBtn').textContent = useCalc
+        ? '⚙️ Schattingsblokken: AAN'
+        : '⚙️ Schattingsblokken: UIT (alleen Excel/eigen posten)';
+      document.getElementById('calcModeHint').textContent = useCalc
+        ? 'Tip: staan alle vaste lasten & reiskosten al in jullie Excel? Zet de schattingsblokken dan UIT om dubbeltellen te voorkomen.'
+        : 'Je rekent nu volledig met jullie eigen spaargeld + ingevoerde/geïmporteerde posten.';
 
       const nights = state.stops.reduce((s, x) => s + Number(x.nights || 0), 0);
       document.getElementById('budNightsEcho').textContent = nights;
 
-      const tripTotal = (nights * (Number(b.camp) + Number(b.food) + Number(b.fun))) + Number(b.fuel) + Number(b.prep) + Number(b.buffer);
-      const homeIn = Number(b.income) + Number(b.vacPay) + (3 * Number(b.utilComp));
-      const homeOut = 3 * Number(b.fixed);
-      const homeNet = homeIn - homeOut;
-      const saveNeeded = Math.max(0, tripTotal - homeNet);
+      // Default calculator figures
+      const calcTrip = useCalc
+        ? (nights * (Number(b.camp) + Number(b.food) + Number(b.fun))) + Number(b.fuel) + Number(b.prep) + Number(b.buffer)
+        : 0;
+      const calcHomeIn = useCalc ? (Number(b.income) + Number(b.vacPay) + (3 * Number(b.utilComp))) : 0;
+      const calcHomeOut = useCalc ? (3 * Number(b.fixed)) : 0;
 
-      document.getElementById('budTripTotal').textContent = fmtEur(tripTotal);
-      document.getElementById('budTripSub').textContent = `${nights} nachten + brandstof, voorbereiding & buffer`;
-      document.getElementById('budHomeNet').textContent = (homeNet >= 0 ? '+ ' : '− ') + fmtEur(Math.abs(homeNet));
-      document.getElementById('budSaveNeeded').textContent = fmtEur(saveNeeded);
+      document.getElementById('budCalcTripBadge').textContent = fmtEur(calcTrip);
+      document.getElementById('budCalcHomeBadge').textContent = (calcHomeIn - calcHomeOut >= 0 ? '+ ' : '− ') + fmtEur(Math.abs(calcHomeIn - calcHomeOut));
+
+      // Custom / Excel items
+      let extraSavings = 0, extraIncome = 0, extraFixed = 0, extraTrip = 0;
+      state.budgetItems.forEach(item => {
+        const mult = item.freq === 'monthly3' ? 3 : 1;
+        const val = Number(item.amount || 0) * mult;
+        if (item.cat === 'spaargeld') extraSavings += val;
+        else if (item.cat === 'inkomsten') extraIncome += val;
+        else if (item.cat === 'vast') extraFixed += val;
+        else extraTrip += val;
+      });
+
+      const plannedSavings = Number(b.savingsNow || 0) + (Number(b.monthlySave || 0) * Number(b.saveMonths || 0)) + extraSavings;
+      const totalIncome = calcHomeIn + extraIncome;
+      const totalCosts = calcTrip + calcHomeOut + extraFixed + extraTrip;
+      const totalAvailable = totalIncome + plannedSavings;
+      const endBalance = totalAvailable - totalCosts;
+
+      document.getElementById('budTotalCosts').textContent = fmtEur(totalCosts);
+      document.getElementById('budCostsSub').textContent = `Reis ${fmtEur(calcTrip + extraTrip)} • Thuis ${fmtEur(calcHomeOut + extraFixed)}`;
+      document.getElementById('budTotalIncome').textContent = fmtEur(totalIncome);
+      document.getElementById('budTotalSavings').textContent = fmtEur(plannedSavings);
+      document.getElementById('budSavingsSub').textContent = `Nu ${fmtEur(b.savingsNow)} + sparen ${fmtEur((b.monthlySave || 0) * (b.saveMonths || 0))}${extraSavings ? ' + extra ' + fmtEur(extraSavings) : ''}`;
+
+      const balCard = document.getElementById('budBalanceCard');
+      const balLbl = document.getElementById('budBalanceLbl');
+      const balVal = document.getElementById('budBalanceVal');
+      const balSub = document.getElementById('budBalanceSub');
+
+      if (endBalance >= 0) {
+        balCard.style.background = 'var(--sage-light)';
+        balCard.style.borderColor = 'var(--sage)';
+        balLbl.style.color = 'var(--sage-dark)';
+        balVal.style.color = 'var(--sage-dark)';
+        balSub.style.color = 'var(--sage-dark)';
+        balLbl.textContent = 'Eindsaldo (Buffer over)';
+        balVal.textContent = '+ ' + fmtEur(endBalance);
+        balSub.textContent = 'Op koers voor 7 april 2027!';
+      } else {
+        const deficit = Math.abs(endBalance);
+        const perM = Number(b.saveMonths || 0) > 0 ? Math.ceil(deficit / Number(b.saveMonths)) : deficit;
+        balCard.style.background = 'var(--warn-light)';
+        balCard.style.borderColor = 'var(--warn)';
+        balLbl.style.color = '#A64720';
+        balVal.style.color = '#A64720';
+        balSub.style.color = '#A64720';
+        balLbl.textContent = 'Nog te sparen';
+        balVal.textContent = '− ' + fmtEur(deficit);
+        balSub.textContent = Number(b.saveMonths || 0) > 0 ? `≈ ${fmtEur(perM)} p/m extra sparen` : 'Voeg extra spaargeld toe';
+      }
+
+      // Coverage progress bar
+      const pct = totalCosts > 0 ? Math.min(100, Math.round((totalAvailable / totalCosts) * 100)) : 100;
+      document.getElementById('budGoalPct').textContent = pct + '% gedekt';
+      document.getElementById('budGoalHint').textContent = `${fmtEur(totalAvailable)} beschikbaar van ${fmtEur(totalCosts)} nodig`;
+      const gFill = document.getElementById('budGoalFill');
+      gFill.style.width = pct + '%';
+      gFill.className = 'prog-fill ' + (pct < 70 ? 'danger' : pct < 100 ? 'warn' : '');
+
+      // Render custom budget items grouped by category
+      document.getElementById('budItemsCount').textContent = `${state.budgetItems.length} posten`;
+      const catMeta = [
+        { key: 'spaargeld', label: '💰 Spaargeld & Extra potjes', badge: 'badge-sage' },
+        { key: 'inkomsten', label: '📈 Inkomsten & Meevallers', badge: 'badge-sage' },
+        { key: 'vast', label: '🏠 Vaste lasten thuis', badge: 'badge-slate' },
+        { key: 'reis', label: '🚐 Reiskosten & Voorbereiding', badge: 'badge-ochre' }
+      ];
+
+      if (!state.budgetItems.length) {
+        document.getElementById('budgetItemsList').innerHTML =
+          '<p class="subtitle" style="margin:4px 0;">Nog geen eigen posten toegevoegd. Voeg hierboven een losse post toe (bijv. een spaarpotje) of importeer jullie Excel-bestand.</p>';
+      } else {
+        document.getElementById('budgetItemsList').innerHTML = catMeta.map(cm => {
+          const rows = state.budgetItems.filter(it => it.cat === cm.key);
+          if (!rows.length) return '';
+          const subtotal = rows.reduce((s, r) => s + Number(r.amount || 0) * (r.freq === 'monthly3' ? 3 : 1), 0);
+          return `
+            <div style="margin-bottom:14px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <h3 style="font-size:15px;">${cm.label}</h3>
+                <span class="badge ${cm.badge}">${fmtEur(subtotal)}</span>
+              </div>
+              <div style="border:1px solid var(--border); border-radius:12px; background:#fff; overflow:hidden;">
+                ${rows.map(it => `
+                  <div class="bud-item-row">
+                    <div>
+                      <strong style="font-size:13.5px;">${esc(it.name)}</strong>
+                      <div style="font-size:11.5px; color:var(--muted);">${it.freq === 'monthly3' ? 'Per maand (×3 = ' + fmtEur(Number(it.amount || 0) * 3) + ')' : 'Eenmalig totaal'}</div>
+                    </div>
+                    <select onchange="updateBudgetItem(${it.id}, 'cat', this.value)" style="padding:5px 8px; font-size:12.5px;">
+                      <option value="spaargeld" ${it.cat==='spaargeld'?'selected':''}>Spaargeld</option>
+                      <option value="inkomsten" ${it.cat==='inkomsten'?'selected':''}>Inkomsten</option>
+                      <option value="vast" ${it.cat==='vast'?'selected':''}>Vaste lasten</option>
+                      <option value="reis" ${it.cat==='reis'?'selected':''}>Reiskosten</option>
+                    </select>
+                    <input type="number" value="${Number(it.amount || 0)}" step="10" style="padding:5px 8px; font-size:13.5px; text-align:right; font-weight:700;" onchange="updateBudgetItem(${it.id}, 'amount', this.value)" />
+                    <button class="btn btn-icon btn-danger" style="width:28px; height:28px; font-size:11px;" onclick="deleteBudgetItem(${it.id})">✕</button>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
     }
+
     function saveBudget() {
       state.budget = {
         camp: Number(document.getElementById('bCamp').value) || 0,
@@ -1546,10 +1852,227 @@
         income: Number(document.getElementById('bIncome').value) || 0,
         vacPay: Number(document.getElementById('bVacPay').value) || 0,
         fixed: Number(document.getElementById('bFixed').value) || 0,
-        utilComp: Number(document.getElementById('bUtilComp').value) || 0
+        utilComp: Number(document.getElementById('bUtilComp').value) || 0,
+        savingsNow: Number(document.getElementById('bSavingsNow').value) || 0,
+        monthlySave: Number(document.getElementById('bMonthlySave').value) || 0,
+        saveMonths: Math.max(0, Number(document.getElementById('bSaveMonths').value) || 0),
+        useDefaultCalc: state.budget.useDefaultCalc !== false
       };
       saveState();
     }
+
+    function quickAddSavings(delta) {
+      state.budget.savingsNow = Math.max(0, Number(state.budget.savingsNow || 0) + delta);
+      saveState();
+      showToast(`+ ${fmtEur(delta)} toegevoegd aan spaargeld 💰`);
+    }
+
+    function toggleCalcMode() {
+      state.budget.useDefaultCalc = !(state.budget.useDefaultCalc !== false);
+      saveState();
+      showToast(state.budget.useDefaultCalc ? 'Schattingsblokken aangezet' : 'Alleen eigen/Excel posten actief');
+    }
+
+    function addBudgetItem() {
+      const name = document.getElementById('newBudName').value.trim();
+      const amount = Number(document.getElementById('newBudAmount').value);
+      if (!name || isNaN(amount) || amount === 0) {
+        showToast('Vul een omschrijving en bedrag in');
+        return;
+      }
+      if (!Array.isArray(state.budgetItems)) state.budgetItems = [];
+      state.budgetItems.push({
+        id: Date.now(),
+        name,
+        cat: document.getElementById('newBudCat').value,
+        freq: document.getElementById('newBudFreq').value,
+        amount: Math.abs(amount)
+      });
+      document.getElementById('newBudName').value = '';
+      document.getElementById('newBudAmount').value = '';
+      saveState();
+      showToast('Budgetpost toegevoegd ✓');
+    }
+
+    function updateBudgetItem(id, field, val) {
+      const it = (state.budgetItems || []).find(x => x.id === id);
+      if (!it) return;
+      it[field] = field === 'amount' ? (Number(val) || 0) : val;
+      saveState();
+    }
+
+    function deleteBudgetItem(id) {
+      state.budgetItems = (state.budgetItems || []).filter(x => x.id !== id);
+      saveState();
+    }
+
+    // --- EXCEL / CSV IMPORTER ---
+    function parseEuroNumber(v) {
+      if (typeof v === 'number' && !isNaN(v)) return v;
+      if (typeof v !== 'string') return NaN;
+      let s = v.replace(/[€$£\s]/g, '').trim();
+      if (!s) return NaN;
+      // Nederlands formaat: 1.250,50 -> 1250.50
+      if (/^-?\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) {
+        s = s.replace(/\./g, '').replace(',', '.');
+      } else if (/^-?\d+,\d{1,2}$/.test(s)) {
+        s = s.replace(',', '.');
+      } else {
+        s = s.replace(/,/g, '');
+      }
+      const n = Number(s);
+      return isNaN(n) ? NaN : n;
+    }
+
+    function guessBudgetCategory(label, rawVal) {
+      const l = (label || '').toLowerCase();
+      if (/spaar|potje|buffer|rekening|opzij|reserves/.test(l)) return 'spaargeld';
+      if (/salaris|loon|inkom|vakantiegeld|toeslag|kinderbijslag|teruggave|bonus|vergoeding|opbrengst|bijdrage/.test(l)) return 'inkomsten';
+      if (/huur|hypotheek|energie|gas|water|elektra|verzeker|zorg|internet|abonnement|opvang|bso|vaste|wegenbelasting|telefoon|gemeente|belasting/.test(l)) return 'vast';
+      if (/camping|tol|brandstof|benzine|diesel|boodschap|eten|uitje|bovag|vignet|reis|fiets|caravan|kip|acsi|terras|ijs/.test(l)) return 'reis';
+      return rawVal < 0 ? 'vast' : 'reis';
+    }
+
+    function handleBudgetExcel(evt) {
+      const file = evt.target.files[0];
+      evt.target.value = '';
+      if (!file) return;
+      if (!window.XLSX) {
+        showToast('Excel-bibliotheek kon niet laden (check internet)');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = new Uint8Array(e.target.result);
+          parsedWorkbook = window.XLSX.read(data, { type: 'array' });
+          const sel = document.getElementById('excelSheetSelect');
+          sel.innerHTML = parsedWorkbook.SheetNames.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+          sel.style.display = parsedWorkbook.SheetNames.length > 1 ? 'inline-block' : 'none';
+          renderExcelSheetPreview();
+          document.getElementById('excelPreviewCard').style.display = 'block';
+          document.getElementById('excelPreviewCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (err) {
+          showToast('Kon Excel-bestand niet lezen');
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function renderExcelSheetPreview() {
+      if (!parsedWorkbook) return;
+      const sheetName = document.getElementById('excelSheetSelect').value || parsedWorkbook.SheetNames[0];
+      const sheet = parsedWorkbook.Sheets[sheetName];
+      const matrix = window.XLSX.utils.sheet_to_json(sheet, { header: 1, raw: true, defval: '' });
+
+      excelPreviewRows = [];
+      matrix.forEach((row, idx) => {
+        if (!Array.isArray(row)) return;
+        const texts = [];
+        const nums = [];
+        row.forEach(cell => {
+          if (cell === null || cell === undefined || cell === '') return;
+          const n = parseEuroNumber(cell);
+          if (!isNaN(n) && Math.abs(n) > 0 && Math.abs(n) < 1000000) {
+            nums.push(n);
+          } else if (typeof cell === 'string' && cell.trim().length > 1) {
+            texts.push(cell.trim());
+          }
+        });
+        if (texts.length && nums.length) {
+          const label = texts.slice(0, 2).join(' — ');
+          // Gebruik het laatste getal in de rij (vaak totaalbedrag) tenzij er maar 1 is
+          const rawVal = nums[nums.length - 1];
+          const isSummary = /\b(totaal|subtotaal|som|saldo|eindtotaal|overzicht|verschil)\b/i.test(label);
+          const looksMonthly = /p\/m|per maand|maand|mnd/i.test(label);
+          excelPreviewRows.push({
+            idx,
+            checked: !isSummary,
+            name: label,
+            cat: guessBudgetCategory(label, rawVal),
+            freq: looksMonthly ? 'monthly3' : 'once',
+            amount: Math.round(Math.abs(rawVal) * 100) / 100
+          });
+        }
+      });
+
+      document.getElementById('excelPreviewSub').textContent =
+        `${excelPreviewRows.length} regels gevonden in tabblad "${sheetName}". Totaalregels zijn alvast uitgevinkt tegen dubbeltellen.`;
+
+      if (!excelPreviewRows.length) {
+        document.getElementById('excelPreviewList').innerHTML =
+          '<div style="padding:16px; font-size:13.5px; color:var(--muted);">Geen rijen met tekst + bedrag gevonden in dit tabblad. Kies evt. een ander tabblad rechtsboven.</div>';
+        return;
+      }
+
+      document.getElementById('excelPreviewList').innerHTML = excelPreviewRows.map((r, i) => `
+        <div class="xl-preview-row">
+          <input type="checkbox" ${r.checked?'checked':''} onchange="excelPreviewRows[${i}].checked = this.checked" />
+          <input type="text" value="${esc(r.name)}" style="padding:4px 7px; font-size:13px;" onchange="excelPreviewRows[${i}].name = this.value" />
+          <select style="padding:4px 6px; font-size:12px;" onchange="excelPreviewRows[${i}].cat = this.value">
+            <option value="spaargeld" ${r.cat==='spaargeld'?'selected':''}>Spaargeld</option>
+            <option value="inkomsten" ${r.cat==='inkomsten'?'selected':''}>Inkomsten</option>
+            <option value="vast" ${r.cat==='vast'?'selected':''}>Vaste lasten</option>
+            <option value="reis" ${r.cat==='reis'?'selected':''}>Reiskosten</option>
+          </select>
+          <select style="padding:4px 6px; font-size:12px;" onchange="excelPreviewRows[${i}].freq = this.value">
+            <option value="once" ${r.freq==='once'?'selected':''}>Eenmalig</option>
+            <option value="monthly3" ${r.freq==='monthly3'?'selected':''}>p/m (×3)</option>
+          </select>
+          <input type="number" value="${r.amount}" step="10" style="padding:4px 6px; font-size:13px; text-align:right; font-weight:700;" onchange="excelPreviewRows[${i}].amount = Number(this.value)||0" />
+        </div>
+      `).join('');
+    }
+
+    function confirmExcelImport(replaceExisting) {
+      const selected = excelPreviewRows.filter(r => r.checked && r.name.trim() && Number(r.amount) > 0);
+      if (!selected.length) {
+        showToast('Vink minstens één regel aan');
+        return;
+      }
+      if (!Array.isArray(state.budgetItems) || replaceExisting) state.budgetItems = [];
+      const baseId = Date.now();
+      selected.forEach((r, i) => {
+        state.budgetItems.push({
+          id: baseId + i,
+          name: r.name.trim(),
+          cat: r.cat,
+          freq: r.freq,
+          amount: Number(r.amount)
+        });
+      });
+      closeExcelPreview();
+      saveState();
+      showToast(`${selected.length} posten uit Excel geïmporteerd! ✓`);
+    }
+
+    function closeExcelPreview() {
+      document.getElementById('excelPreviewCard').style.display = 'none';
+      parsedWorkbook = null;
+      excelPreviewRows = [];
+    }
+
+    function exportBudgetExcel() {
+      if (!window.XLSX) {
+        showToast('Excel-bibliotheek niet beschikbaar offline');
+        return;
+      }
+      const b = state.budget;
+      const rows = [
+        ['Categorie', 'Omschrijving', 'Frequentie', 'Bedrag (€)', 'Totaal 3 mnd (€)'],
+        ['Spaargeld', 'Huidig spaargeld', 'Eenmalig', Number(b.savingsNow || 0), Number(b.savingsNow || 0)],
+        ['Spaargeld', `Maandelijks sparen (${b.saveMonths || 0} mnd)`, 'Maandelijks', Number(b.monthlySave || 0), Number(b.monthlySave || 0) * Number(b.saveMonths || 0)]
+      ];
+      (state.budgetItems || []).forEach(it => {
+        const mult = it.freq === 'monthly3' ? 3 : 1;
+        rows.push([it.cat, it.name, it.freq === 'monthly3' ? 'Per maand (×3)' : 'Eenmalig', Number(it.amount || 0), Number(it.amount || 0) * mult]);
+      });
+      const ws = window.XLSX.utils.aoa_to_sheet(rows);
+      const wb = window.XLSX.utils.book_new();
+      window.XLSX.utils.book_append_sheet(wb, ws, 'Budget Voorjaar 27');
+      window.XLSX.writeFile(wb, `veldgids-27-budget-${new Date().toISOString().slice(0,10)}.xlsx`);
+    }
+
     function fmtEur(n) { return '€ ' + Math.round(n).toLocaleString('nl-NL'); }
 
     // --- RENDER HUISBEWARING ---
@@ -1866,6 +2389,8 @@
         const remote = row.data;
         if (remote && (!state.updatedAt || (remote.updatedAt || 0) >= state.updatedAt || notify)) {
           state = Object.assign(deepClone(DEFAULT_STATE), remote);
+          state.budget = Object.assign(deepClone(DEFAULT_STATE.budget), remote.budget || {});
+          if (!Array.isArray(state.budgetItems)) state.budgetItems = [];
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
           renderAll();
         }
