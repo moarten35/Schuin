@@ -1,0 +1,83 @@
+================================================================
+VELDGIDS VOORJAAR '27 — STAP-VOOR-STAP OP JULLIE TELEFOONS (10 MIN)
+Voor Maarten, Alieke, Abel & Fieke
+================================================================
+
+Met dit pakket zetten jullie de Veldgids gratis online, koppelen
+jullie hem voor live synchronisatie tussen twee telefoons, en
+installeren jullie hem als echte app (met icoon + offline modus).
+
+WAT ZIT ER IN DEZE MAP?
+- index.html          -> De complete app
+- manifest.json       -> Zorgt dat je telefoon hem als app herkent
+- sw.js               -> Zorgt dat de app ook zonder 4G werkt op de camping
+- icon-192.png & 512  -> Het app-icoon voor op jullie startscherm
+- supabase-setup.sql  -> Het 1-klik database scriptje voor live sync
+
+----------------------------------------------------------------
+STAP 1: APP ONLINE ZETTEN (GRATIS VIA GITHUB PAGES — 3 MIN)
+----------------------------------------------------------------
+1. Ga naar https://github.com en maak een gratis account aan (of log in).
+2. Klik rechtsboven op het '+' tekentje -> 'New repository'.
+3. Geef als naam bijv.: veldgids-27
+4. Laat hem op 'Public' staan (nodig voor gratis GitHub Pages) en klik op
+   'Create repository'.
+5. Klik op de blauwe link 'uploading an existing file'.
+6. Sleep deze 5 bestanden vanuit het uitgepakte ZIP-mapje naar het vak:
+   - index.html
+   - manifest.json
+   - sw.js
+   - icon-192.png
+   - icon-512.png
+   (supabase-setup.sql en dit tekstbestand hoef je niet te uploaden.)
+7. Klik onderaan op de groene knop 'Commit changes'.
+8. Klik bovenaan in je repository op 'Settings' -> links in het menu op 'Pages'.
+9. Zet bij 'Branch' de keuze van 'None' op 'main' en klik op 'Save'.
+10. Wacht 1 minuut en ververs de pagina. Bovenaan verschijnt jullie eigen link:
+    https://<jouw-gebruikersnaam>.github.io/veldgids-27/
+
+(Tip: Geen zin in GitHub? Sleep de hele uitgepakte map gewoon naar
+https://app.netlify.com/drop — dan krijg je binnen 10 seconden een link!)
+
+----------------------------------------------------------------
+STAP 2: LIVE SYNC KOPPELEN (GRATIS VIA SUPABASE — 4 MIN)
+----------------------------------------------------------------
+Wil je dat elk vinkje van Alieke direct bij Maarten verschijnt?
+1. Ga naar https://supabase.com en maak een gratis account aan.
+2. Klik op 'New project', noem het bijv. 'veldgids-27', kies als regio
+   'West EU (Ireland)' of 'Central EU (Frankfurt)' en klik op 'Create'.
+   (Wacht ~1 minuut tot het project klaar is.)
+3. Klik links in het menu op 'SQL Editor' -> '+ New query'.
+4. Open het bestand 'supabase-setup.sql' uit deze map, kopieer ALLE tekst,
+   plak het in Supabase en klik op de groene knop 'Run'.
+   Je ziet onderin: 'Success. No rows returned.' Top!
+5. Klik links onderin op het tandwieltje ('Project Settings') -> 'API'.
+6. Kopieer deze 2 dingen (bewaar ze even in een appje aan Alieke):
+   - Project URL  (begint met https://....supabase.co)
+   - anon public key (een lange reeks letters onder 'Project API keys')
+
+----------------------------------------------------------------
+STAP 3: INSTALLEREN OP BEIDE TELEFOONS (2 MIN)
+----------------------------------------------------------------
+Open jullie nieuwe link (uit Stap 1) op zowel Maartens als Aliekes telefoon:
+
+Op Android (Chrome):
+- Tik op de melding 'App installeren' onderaan, OF tik rechtsboven op
+  de drie puntjes (⋮) -> 'App installeren' / 'Toevoegen aan startscherm'.
+
+Op iPhone (Safari):
+- Tik onderaan op het Deel-icoon (vierkantje met pijltje omhoog)
+  -> scroll iets omlaag -> 'Zet op beginscherm' -> 'Voeg toe'.
+
+Koppel daarna de live sync (eenmalig op beide telefoons):
+1. Open de app vanaf jullie startscherm.
+2. Tik rechtsboven op 'App & Sync'.
+3. Plak de Project URL en Anon Key uit Stap 2.
+4. Zorg dat bij 'Gezinscode' op beide telefoons precies hetzelfde staat
+   (standaard: schraa-voorjaar-27 — maak er gerust een eigen geheime code van).
+5. Tik op 'Verbinden & Opslaan'.
+
+KLAAR! Vanaf nu werkt alles offline op de camping én synct elke
+aanpassing automatisch tussen jullie telefoons zodra er internet is.
+
+Veel voorpret gewenst!
