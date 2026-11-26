@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Veldgids Voorjaar '27 — Maarten, Alieke, Abel &amp; Fieke</title>
+  <meta name="theme-color" content="#567560" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Veldgids '27" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #F7F4EE;
+      --surface: #FFFFFF;
+      --surface-soft: #F1ECE2;
+      --border: #E4DDD0;
+      --text: #2B3430;
+      --muted: #67726B;
+      --sage: #567560;
+      --sage-dark: #3D5746;
+      --sage-light: #E8F0EA;
+      --ochre: #D99B38;
+      --ochre-light: #FCF2DF;
+      --slate: #4B5D67;
+      --slate-light: #EAEFF2;
+      --warn: #C96A42;
+      --warn-light: #FBEDE7;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 2px 12px rgba(43, 52, 48, 0.05);
+      --font-serif: 'Fraunces', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .topbar {
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(247, 244, 238, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+    }
+    .topbar-inner {
+      max-width: 1120px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .brand { display: flex; align-items: center; gap: 11px; }
+    .brand-mark {
+      width: 38px; height: 38px; border-radius: 11px;
+      background: var(--sage); display: grid; place-items: center;
+      color: #F7F4EE; font-family: var(--font-serif); font-weight: 700; font-size: 17px;
+      flex-shrink: 0; box-shadow: 0 2px 6px rgba(86, 117, 96, 0.25);
+    }
+    .brand-title { font-family: var(--font-serif); font-size: 18px; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; }
+    .brand-sub { font-size: 12px; color: var(--muted); }
+    .topbar-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      padding: 8px 13px; border-radius: 999px; font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all 0.16s ease; text-decoration: none; white-space: nowrap;
+    }
+    .btn:hover { border-color: var(--sage); background: var(--sage-light); }
+    .btn-primary { background: var(--sage); color: #fff; border-color: var(--sage); }
+    .btn-primary:hover { background: var(--sage-dark); border-color: var(--sage-dark); color: #fff; }
+    .btn-ochre { background: var(--ochre-light); color: #8A5A10; border-color: #ECCF99; }
+    .btn-ochre:hover { background: #F8E5C0; }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+    .btn-icon { width: 32px; height: 32px; padding: 0; border-radius: 10px; }
+    .btn-danger { color: var(--warn); border-color: #F2C9B8; background: var(--warn-light); }
+
+    .sync-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--ochre); display: inline-block;
+    }
+    .sync-dot.synced { background: #3D9960; }
+    .sync-dot.error { background: var(--warn); }
+
+    /* Desktop Tabs */
+    .desktop-nav {
+      max-width: 1120px; margin: 14px auto 0; padding: 0 16px;
+      display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
+    }
+    .desktop-nav::-webkit-scrollbar { display: none; }
+    .nav-pill {
+      padding: 9px 15px; border-radius: 999px; border: 1px solid transparent;
+      background: transparent; color: var(--muted); font-family: inherit;
+      font-size: 13.5px; font-weight: 600; cursor: pointer; white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .nav-pill:hover { background: var(--surface-soft); color: var(--text); }
+    .nav-pill.active {
+      background: var(--surface); color: var(--sage-dark);
+      border-color: var(--border); box-shadow: var(--shadow);
+    }
+
+    /* Main Container */
+    .main {
+      max-width: 1120px; margin: 0 auto;
+      padding: 18px 16px 96px;
+    }
+    .tab-panel { display: none; animation: fadeIn 0.2s ease; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Cards & Grid */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+    .card-soft { background: var(--surface-soft); border-color: var(--border); box-shadow: none; }
+    .card-sage { background: var(--sage-light); border-color: #C9DCCE; box-shadow: none; }
+    .card-ochre { background: var(--ochre-light); border-color: #EED4A2; box-shadow: none; }
+    .card-header {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+      margin-bottom: 14px; flex-wrap: wrap;
+    }
+    h1, h2, h3 { font-family: var(--font-serif); margin: 0; color: var(--text); font-weight: 600; }
+    h2 { font-size: 21px; letter-spacing: -0.01em; }
+    h3 { font-size: 16.5px; }
+    .subtitle { font-size: 13px; color: var(--muted); margin-top: 3px; }
+
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+    @media (max-width: 900px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    /* Hero Banner */
+    .hero {
+      background: linear-gradient(135deg, #567560 0%, #3E5A47 100%);
+      color: #F7F4EE; border-radius: 20px; padding: 24px;
+      margin-bottom: 16px; position: relative; overflow: hidden;
+    }
+    .hero::after {
+      content: ""; position: absolute; right: -40px; top: -40px;
+      width: 180px; height: 180px; border-radius: 50%;
+      background: rgba(217, 155, 56, 0.24); pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.12em;
+      color: #EBD3A5; font-weight: 700; margin-bottom: 6px;
+    }
+    .hero h1 { color: #F7F4EE; font-size: 27px; line-height: 1.18; margin-bottom: 8px; }
+    .hero p { color: rgba(247, 244, 238, 0.88); margin: 0 0 18px; max-width: 650px; font-size: 14.5px; }
+    .countdown-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .cd-box {
+      background: rgba(255, 255, 255, 0.13); border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px; padding: 10px 15px; min-width: 78px; text-align: center;
+      backdrop-filter: blur(4px);
+    }
+    .cd-num { font-family: var(--font-serif); font-size: 24px; font-weight: 700; line-height: 1; }
+    .cd-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.82; margin-top: 4px; }
+
+    /* KPI Cards */
+    .kpi {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow);
+    }
+    .kpi-lbl { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 700; }
+    .kpi-val { font-family: var(--font-serif); font-size: 24px; font-weight: 700; margin: 5px 0 2px; color: var(--text); }
+    .kpi-sub { font-size: 12px; color: var(--muted); }
+
+    /* Tags / Badges */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 700;
+    }
+    .badge-sage { background: var(--sage-light); color: var(--sage-dark); }
+    .badge-ochre { background: var(--ochre-light); color: #8A5A10; }
+    .badge-warn { background: var(--warn-light); color: #A64720; }
+    .badge-slate { background: var(--slate-light); color: var(--slate); }
+
+    /* Progress Bar */
+    .prog-track {
+      height: 10px; background: var(--surface-soft); border-radius: 999px; overflow: hidden;
+      margin: 8px 0;
+    }
+    .prog-fill { height: 100%; background: var(--sage); border-radius: 999px; transition: width 0.3s ease; }
+    .prog-fill.warn { background: var(--ochre); }
+    .prog-fill.danger { background: var(--warn); }
+
+    /* Forms & Inputs */
+    input[type="text"], input[type="number"], input[type="date"], input[type="url"], select, textarea {
+      width: 100%; padding: 9px 12px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); background: #FDFCFA; color: var(--text);
+      font-family: inherit; font-size: 14px; transition: border-color 0.15s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--sage); background: #fff;
+    }
+    label.field-lbl {
+      display: block; font-size: 12px; font-weight: 700; color: var(--muted);
+      margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 12px; }
+
+    /* Route Stops */
+    .stop-item {
+      border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px;
+      background: #FCFBF8; margin-bottom: 10px;
+      display: grid; grid-template-columns: 36px 1fr auto; gap: 12px; align-items: start;
+    }
+    .stop-num {
+      width: 34px; height: 34px; border-radius: 50%; background: var(--sage-light);
+      color: var(--sage-dark); font-family: var(--font-serif); font-weight: 700;
+      display: grid; place-items: center; font-size: 15px;
+    }
+    .stop-dates { font-size: 12px; font-weight: 700; color: var(--sage-dark); margin-bottom: 2px; }
+    .stop-title { font-weight: 700; font-size: 15.5px; }
+    .stop-notes { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .stop-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+    .nights-ctrl {
+      display: inline-flex; align-items: center; border: 1px solid var(--border);
+      border-radius: 999px; background: #fff; overflow: hidden;
+    }
+    .nights-ctrl button {
+      border: none; background: transparent; padding: 4px 10px; cursor: pointer; font-weight: 700; color: var(--text);
+    }
+    .nights-ctrl span { font-size: 12.5px; font-weight: 700; padding: 0 4px; min-width: 52px; text-align: center; }
+
+    /* Checklists (Paklijst & Draaiboek) */
+    .filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+    .chip {
+      padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12.5px; font-weight: 600; color: var(--muted);
+      cursor: pointer;
+    }
+    .chip.active { background: var(--sage); color: #fff; border-color: var(--sage); }
+
+    .check-row {
+      display: flex; align-items: center; gap: 11px; padding: 10px 12px;
+      border-bottom: 1px solid #EFEAE0; transition: background 0.12s;
+    }
+    .check-row:last-child { border-bottom: none; }
+    .check-row:hover { background: #FAF7F2; }
+    .check-row input[type="checkbox"] {
+      width: 19px; height: 19px; accent-color: var(--sage); cursor: pointer; flex-shrink: 0;
+    }
+    .check-text { flex: 1; font-size: 14px; }
+    .check-row.done .check-text { text-decoration: line-through; color: var(--muted); }
+    .assignee-btn {
+      font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--surface-soft); color: var(--text);
+      cursor: pointer; white-space: nowrap;
+    }
+
+    /* Weight table */
+    .gear-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 9px 10px; border-bottom: 1px solid #EFEAE0;
+    }
+    .gear-row:last-child { border-bottom: none; }
+    .loc-toggle {
+      padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700;
+      border: 1px solid transparent; cursor: pointer;
+    }
+    .loc-kip { background: var(--ochre-light); color: #8A5A10; border-color: #ECCF99; }
+    .loc-auto { background: var(--sage-light); color: var(--sage-dark); border-color: #C4D9C9; }
+
+    /* Bottom Mobile Nav */
+    .mobile-nav {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+      background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+      grid-template-columns: repeat(7, 1fr);
+    }
+    .mob-btn {
+      border: none; background: transparent; color: var(--muted);
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      font-family: inherit; font-size: 10px; font-weight: 600; padding: 5px 2px; cursor: pointer;
+    }
+    .mob-btn .mob-ico { font-size: 17px; line-height: 1.1; }
+    .mob-btn.active { color: var(--sage-dark); }
+
+    .add-grid { display: grid; grid-template-columns: 2fr 1.2fr 1fr auto; gap: 8px; }
+    @media (max-width: 780px) {
+      .add-grid { grid-template-columns: 1fr 1fr; }
+      .add-grid input[type="text"] { grid-column: 1 / -1; }
+      .add-grid button { grid-column: 1 / -1; }
+      .desktop-nav { display: none; }
+      .mobile-nav { display: grid; }
+      .topbar-actions .hide-mob { display: none; }
+      .stop-item { grid-template-columns: 30px 1fr; }
+      .stop-controls { grid-column: 1 / -1; justify-content: flex-start; }
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(43, 52, 48, 0.45); backdrop-filter: blur(3px);
+      display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--surface); border-radius: 20px; max-width: 640px; width: 100%;
+      max-height: 88vh; overflow-y: auto; padding: 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 82px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--text); color: #fff; padding: 10px 18px; border-radius: 999px;
+      font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none;
+      transition: all 0.25s ease; z-index: 120; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Print Views (Roadbook & Contract) */
+    #print-area { display: none; }
+    @media print {
+      body { background: #fff; font-size: 12px; color: #111; }
+      .topbar, .desktop-nav, .main, .mobile-nav, .modal-backdrop, .toast { display: none !important; }
+      #print-area { display: block !important; padding: 0; }
+      .print-page { page-break-after: always; padding: 6mm 4mm; }
+      .print-page:last-child { page-break-after: auto; }
+      .print-header { border-bottom: 2px solid #567560; padding-bottom: 8px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: baseline; }
+      .print-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+      .print-table th, .print-table td { border: 1px solid #D5CEC0; padding: 6px 8px; text-align: left; font-size: 11.5px; }
+      .print-table th { background: #F1ECE2; }
+      .contract-box { border: 1px solid #CCC; padding: 12px 16px; border-radius: 6px; margin: 10px 0; }
+      .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 28px; }
+      .sig-line { border-top: 1px solid #333; padding-top: 6px; margin-top: 42px; font-size: 11.5px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">V'27</div>
+        <div>
+          <div class="brand-title">Veldgids Voorjaar ’27</div>
+          <div class="brand-sub">Maarten, Alieke, Abel &amp; Fieke • Kip 40T</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn" onclick="openSyncModal()" title="Synchronisatie &amp; Telefoon-app">
+          <span class="sync-dot" id="syncDot"></span>
+          <span id="syncLabel">App &amp; Sync</span>
+        </button>
+        <button class="btn btn-primary" onclick="printRoadbook()">
+          <span>📄</span> <span class="hide-mob">PDF Roadbook</span><span class="show-mob-only"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- DESKTOP NAVIGATION -->
+  <nav class="desktop-nav" id="desktopNav">
+    <button class="nav-pill active" data-tab="overzicht">Overzicht</button>
+    <button class="nav-pill" data-tab="route">Route &amp; Plekken</button>
+    <button class="nav-pill" data-tab="kip">Kip 40T &amp; Fietsen</button>
+    <button class="nav-pill" data-tab="paklijst">Paklijst</button>
+    <button class="nav-pill" data-tab="draaiboek">Draaiboek</button>
+    <button class="nav-pill" data-tab="budget">Budget &amp; Cashflow</button>
+    <button class="nav-pill" data-tab="huisbewaring">Huisbewaring</button>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- ==================== TAB 1: OVERZICHT ==================== -->
+    <section id="tab-overzicht" class="tab-panel active">
+      <div class="hero">
+        <div class="hero-eyebrow">Woensdag 7 april 2027 → Week 26 • Hoenderloo – Europa</div>
+        <h1>Drie maanden voorjaar met de Kip 40T</h1>
+        <p>Italië, Slovenië, Kroatië &amp; Oostenrijk op peuter-tempo. Met Ponzano Monferrato als eerste echte landing, een camper-meetup met Opa &amp; Oma en nul haast.</p>
+        <div class="countdown-row" id="countdownRow"></div>
+      </div>
+
+      <div class="grid-4">
+        <div class="kpi">
+          <div class="kpi-lbl">Geplande Reisduur</div>
+          <div class="kpi-val" id="kpiNights">—</div>
+          <div class="kpi-sub" id="kpiReturnDate">Terug in Week 26</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-lbl">Kip 40T Gewicht</div>
+          <div class="kpi-val" id="kpiWeight">—</div>
+          <div class="kpi-sub" id="kpiWeightSub">Max 1.000 kg</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-lbl">Draaiboek Taken</div>
+          <div class="kpi-val" id="kpiTasks">—</div>
+          <div class="kpi-sub" id="kpiTasksSub">Voorbereiding</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-lbl">Paklijst Status</div>
+          <div class="kpi-val" id="kpiPack">—</div>
+          <div class="kpi-sub" id="kpiPackSub">Ingepakt</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>2027 Drukteradar</h2>
+              <div class="subtitle">Slim om de pieken heen sturen</div>
+            </div>
+            <span class="badge badge-ochre">Voorjaar 2027</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:13.5px;">
+            <div style="padding:10px 12px; background:var(--sage-light); border-radius:10px;">
+              <strong>28–29 maart • Pasen (Meevaller!)</strong><br/>
+              Valt net vóór vertrek op 7 april. Jullie rijden achter de paasdrukte aan.
+            </div>
+            <div style="padding:10px 12px; background:var(--ochre-light); border-radius:10px;">
+              <strong>24 apr – 2 mei • Meivakantie NL</strong><br/>
+              Populaire campings in Noord-Italië even 2 dagen vooruit bellen.
+            </div>
+            <div style="padding:10px 12px; background:var(--warn-light); border-radius:10px;">
+              <strong>6 mei (Hemelvaart) &amp; 16–30 mei (Pfingstferien)</strong><br/>
+              Zuid-Duitsland heeft 2 weken pinkstervakantie. Vermijd Gardameer &amp; Brennerpas — duik precies dan rustig Slovenië of het Kroatische binnenland in!
+            </div>
+            <div style="padding:10px 12px; background:var(--sage-light); border-radius:10px;">
+              <strong>Juni 2027 • Gouden maand</strong><br/>
+              Warm, groen en rustig vóór de grote zomervakantie. Ideaal voor Oostenrijk &amp; camper-meetup Opa &amp; Oma.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>Onze Gouden Reisregels</h2>
+              <div class="subtitle">Voor Abel (bijna 4) &amp; Fieke (bijna 2)</div>
+            </div>
+            <span class="badge badge-sage">Rust = Winst</span>
+          </div>
+          <ul style="margin:0; padding-left:18px; display:flex; flex-direction:column; gap:10px; font-size:14px;">
+            <li><strong>De 3-3-3 peuterregel:</strong> Max 3 uur netto rijden (liefst tijdens Fieke’s middagslaapje), minstens 3–4 nachten op één plek, uiterlijk 15:00 uur aankomen.</li>
+            <li><strong>Het 19:30-probleem in april:</strong> Kinderen slapen om half acht, buiten is het 9°C. Uitritsbare voortent + klein keramisch kacheltje (500/1000W) = jullie avond-woonkamer.</li>
+            <li><strong>Weegbrug vóór vertrek:</strong> Kip 40T blijft strikt onder 1.000 kg. Zwaar spul (voortent, gereedschap, voorraad) altijd in de kofferbak van de auto.</li>
+            <li><strong>Thuisfront-rust:</strong> Collega-imker regelt de bijenkasten tijdens het zwermseizoen (mei/juni) &amp; buurmeisje past op huis en tuin op basis van verbruikskosten.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: ROUTE & PLEKKEN ==================== -->
+    <section id="tab-route" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>Route-etappes (Start: wo 7 april 2027)</h2>
+            <div class="subtitle">Pas nachten of volgorde aan — alle datums en weeknummers schuiven automatisch mee.</div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="toggleAddStop()">+ Etappe toevoegen</button>
+        </div>
+
+        <div id="addStopBox" class="card card-soft" style="display:none; margin-bottom:14px;">
+          <div class="form-row">
+            <div><label class="field-lbl">Regio / Plek</label><input type="text" id="newStopName" placeholder="bijv. Val di Funes, Dolomieten" /></div>
+            <div><label class="field-lbl">Land</label>
+              <select id="newStopCountry">
+                <option>Italië</option><option>Slovenië</option><option>Kroatië</option><option>Oostenrijk</option><option>Duitsland / Frankrijk</option>
+              </select>
+            </div>
+            <div><label class="field-lbl">Nachten</label><input type="number" id="newStopNights" value="5" min="1" max="30" /></div>
+          </div>
+          <div style="margin-bottom:10px;"><label class="field-lbl">Notitie / Camping-type</label><input type="text" id="newStopNotes" placeholder="bijv. Kleine boerencamping, zwembadje, MTB-trails" /></div>
+          <button class="btn btn-primary btn-sm" onclick="addStop()">Opslaan</button>
+          <button class="btn btn-sm" onclick="toggleAddStop()">Annuleren</button>
+        </div>
+
+        <div id="routeList"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>Google Maps Plekken-kluis</h2>
+            <div class="subtitle">Bewaar jullie mooiste campings en stops overzichtelijk bij elkaar</div>
+          </div>
+          <a class="btn btn-ochre" href="https://maps.app.goo.gl/56pGMD9K6amGbUwx7?g_st=ac" target="_blank" rel="noopener">
+            🗺️ Open onze Google Maps-lijst ↗
+          </a>
+        </div>
+
+        <div class="grid-2" style="margin-bottom:14px;">
+          <div class="card card-soft" style="margin:0; padding:14px;">
+            <label class="field-lbl">Snel plek toevoegen</label>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <input type="text" id="placeName" placeholder="Naam camping of plek (bijv. Camping Koren, Kobarid)" />
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                <select id="placeCountry">
+                  <option>Italië</option><option>Slovenië</option><option>Kroatië</option><option>Oostenrijk</option><option>Onderweg</option>
+                </select>
+                <select id="placeType">
+                  <option>Boerencamping</option><option>Camping + Zwembad</option><option>Natuur / MTB</option><option>Vrienden / Familie</option>
+                </select>
+              </div>
+              <input type="url" id="placeUrl" placeholder="Google Maps link (optioneel)" />
+              <button class="btn btn-primary btn-sm" onclick="addPlace()">+ Toevoegen aan kluis</button>
+            </div>
+          </div>
+
+          <div class="card card-soft" style="margin:0; padding:14px;">
+            <label class="field-lbl">Bulk-import (tekst of Google Takeout CSV)</label>
+            <textarea id="bulkPlaces" rows="3" placeholder="Plak meerdere plekken (één per regel)&#10;bijv. Camping Sobec, Slovenië&#10;Agricamping Toscane"></textarea>
+            <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; align-items:center;">
+              <button class="btn btn-sm" onclick="importBulkText()">Importeer regels</button>
+              <label class="btn btn-sm" style="cursor:pointer;">
+                📁 CSV uploaden
+                <input type="file" accept=".csv,.txt" style="display:none;" onchange="importCsvFile(event)" />
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div id="placesList"></div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: KIP 40T & FIETSEN ==================== -->
+    <section id="tab-kip" class="tab-panel">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>Kip 40T Beladingscalculator</h2>
+              <div class="subtitle">Max toegestaan gewicht: 1.000 kg</div>
+            </div>
+            <span class="badge" id="weightStatusBadge">—</span>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label class="field-lbl">Leeggewicht Kip 40T (kg)</label>
+              <input type="number" id="kipCurb" value="740" min="500" max="950" onchange="updateKipSettings()" />
+            </div>
+            <div>
+              <label class="field-lbl">Max. toegestaan (kg)</label>
+              <input type="number" id="kipMax" value="1000" min="750" max="1350" onchange="updateKipSettings()" />
+            </div>
+          </div>
+
+          <div style="margin:12px 0;">
+            <div style="display:flex; justify-content:space-between; font-size:13.5px; font-weight:700;">
+              <span>Totaal in Kip: <span id="kipTotalKg">0</span> kg</span>
+              <span>Resterend: <span id="kipRemainKg">0</span> kg</span>
+            </div>
+            <div class="prog-track"><div class="prog-fill" id="kipProgFill" style="width:0%"></div></div>
+            <div class="subtitle">In de trekauto geladen: <strong id="autoTotalKg">0 kg</strong> (houd zware spullen hier!)</div>
+          </div>
+
+          <div style="display:flex; gap:8px; margin:14px 0 10px;">
+            <input type="text" id="newGearName" placeholder="Nieuw item (bijv. Skottelbraai)" style="flex:2;" />
+            <input type="number" id="newGearKg" placeholder="kg" style="width:75px;" min="1" max="150" />
+            <button class="btn btn-primary btn-sm" onclick="addGear()">+</button>
+          </div>
+
+          <div id="gearList"></div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>Fietsen-configurator</h2>
+                <div class="subtitle">Het grote dilemma: 1 of 2 e-bikes + MTB?</div>
+              </div>
+              <span class="badge badge-sage">Dak vs. Dissel</span>
+            </div>
+
+            <div class="filter-bar" id="bikeConfigBtns">
+              <button class="chip" data-bike="mtb1e" onclick="setBikeConfig('mtb1e')">MTB + 1 E-bike</button>
+              <button class="chip" data-bike="mtb2e" onclick="setBikeConfig('mtb2e')">MTB + 2 E-bikes</button>
+              <button class="chip" data-bike="mtbonly" onclick="setBikeConfig('mtbonly')">Alleen MTB + Loopfiets</button>
+            </div>
+
+            <div id="bikeAdviceBox" class="card card-soft" style="margin:0; padding:15px;"></div>
+          </div>
+
+          <div class="card card-ochre">
+            <h3 style="margin-bottom:8px;">Kip 40T Praktijkchecks (April → Juni)</h3>
+            <ul style="margin:0; padding-left:18px; font-size:13.5px; display:flex; flex-direction:column; gap:7px;">
+              <li><strong>Gas in het buitenland:</strong> NL-flessen kun je niet ruilen in IT/SI/HR. Neem 2 lichtgewicht flessen + klein 500/1000W keramisch kacheltje mee (of LPG-fles met buitenvuller).</li>
+              <li><strong>Koelkast in juni (30°C+):</strong> Plaats een simpele 12V-ventilator achter het bovenste buitenrooster — houdt melk en kaas koel.</li>
+              <li><strong>Voortent-strategie:</strong> Rits bij korte stops (3–4 nachten) alleen het dak als luifel op; zijwanden erin zodra aprilwind of koude avonden daarom vragen.</li>
+              <li><strong>Banden &amp; BOVAG:</strong> Caravanbanden mogen voor veiligheid (en Tempo 100) max 6 jaar oud zijn. Check de DOT-code!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: PAKLIJST ==================== -->
+    <section id="tab-paklijst" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>Uitgebreide Paklijst</h2>
+            <div class="subtitle">Vink samen af — tik op een naam om te wisselen (Maarten / Alieke / Samen)</div>
+          </div>
+          <div style="min-width:170px;">
+            <div style="font-size:12.5px; font-weight:700; text-align:right;" id="packProgressTxt">0 / 0 ingepakt</div>
+            <div class="prog-track"><div class="prog-fill" id="packProgFill" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <div class="filter-bar" id="packFilters">
+          <button class="chip active" data-pf="all" onclick="setPackFilter('all')">Alles</button>
+          <button class="chip" data-pf="todo" onclick="setPackFilter('todo')">Nog pakken</button>
+          <button class="chip" data-pf="done" onclick="setPackFilter('done')">Ingepakt</button>
+          <button class="chip" data-pf="Maarten" onclick="setPackFilter('Maarten')">Maarten</button>
+          <button class="chip" data-pf="Alieke" onclick="setPackFilter('Alieke')">Alieke</button>
+          <button class="chip" data-pf="Samen" onclick="setPackFilter('Samen')">Samen</button>
+        </div>
+
+        <div class="card card-soft" style="padding:12px; margin-bottom:16px;">
+          <div class="add-grid">
+            <input type="text" id="newPackItem" placeholder="Nieuw paklijst-item toevoegen..." />
+            <select id="newPackCat">
+              <option>Kip 40T &amp; Techniek</option>
+              <option>Abel &amp; Fieke</option>
+              <option>Kleding Voorjaar &amp; Zomer</option>
+              <option>Fietsen &amp; Buiten</option>
+              <option>Keuken &amp; Eten</option>
+              <option>Papieren &amp; Veiligheid</option>
+              <option>EHBO &amp; Drogist</option>
+            </select>
+            <select id="newPackWho">
+              <option>Samen</option><option>Maarten</option><option>Alieke</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="addPackItem()">+ Toevoegen</button>
+          </div>
+        </div>
+
+        <div id="packCategories"></div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 5: DRAAIBOEK ==================== -->
+    <section id="tab-draaiboek" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>Aftel-draaiboek (Nov 2026 – Apr 2027)</h2>
+            <div class="subtitle">Alle belangrijke regelingen, verzekeringen, bijenkasten &amp; onderhoud op één plek</div>
+          </div>
+          <div style="min-width:170px;">
+            <div style="font-size:12.5px; font-weight:700; text-align:right;" id="taskProgressTxt">0 / 0 geregeld</div>
+            <div class="prog-track"><div class="prog-fill" id="taskProgFill" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <div class="filter-bar" id="taskFilters">
+          <button class="chip active" data-tf="all" onclick="setTaskFilter('all')">Alles</button>
+          <button class="chip" data-tf="todo" onclick="setTaskFilter('todo')">Openstaand</button>
+          <button class="chip" data-tf="done" onclick="setTaskFilter('done')">Afgerond</button>
+          <button class="chip" data-tf="Maarten" onclick="setTaskFilter('Maarten')">Maarten</button>
+          <button class="chip" data-tf="Alieke" onclick="setTaskFilter('Alieke')">Alieke</button>
+          <button class="chip" data-tf="Samen" onclick="setTaskFilter('Samen')">Samen</button>
+        </div>
+
+        <div class="card card-soft" style="padding:12px; margin-bottom:16px;">
+          <div class="add-grid">
+            <input type="text" id="newTaskText" placeholder="Nieuwe taak toevoegen..." />
+            <select id="newTaskPhase">
+              <option>Nov – Dec 2026</option>
+              <option>Januari 2027</option>
+              <option>Februari 2027</option>
+              <option>Maart 2027</option>
+              <option>Vertrekweek (Apr 2027)</option>
+            </select>
+            <select id="newTaskWho">
+              <option>Samen</option><option>Maarten</option><option>Alieke</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="addTask()">+ Toevoegen</button>
+          </div>
+        </div>
+
+        <div id="taskPhases"></div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 6: BUDGET & CASHFLOW ==================== -->
+    <section id="tab-budget" class="tab-panel">
+      <div class="grid-3" style="margin-bottom:16px;">
+        <div class="kpi">
+          <div class="kpi-lbl">Reiskosten Onderweg</div>
+          <div class="kpi-val" id="budTripTotal">€ 0</div>
+          <div class="kpi-sub" id="budTripSub">Gebaseerd op route-nachten</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-lbl">Thuisfront Saldo (3 mnd)</div>
+          <div class="kpi-val" id="budHomeNet">€ 0</div>
+          <div class="kpi-sub">Inkomsten incl. vakantiegeld − vaste lasten</div>
+        </div>
+        <div class="kpi" style="border-color:var(--sage); background:var(--sage-light);">
+          <div class="kpi-lbl" style="color:var(--sage-dark);">Benodigde Spaarpot</div>
+          <div class="kpi-val" id="budSaveNeeded" style="color:var(--sage-dark);">€ 0</div>
+          <div class="kpi-sub" style="color:var(--sage-dark);">Reis + eventueel tekort thuis</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>1. Reiskosten Onderweg</h2>
+              <div class="subtitle">Gekoppeld aan jullie <strong id="budNightsEcho">83</strong> geplande nachten</div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div><label class="field-lbl">Camping per nacht (€)</label><input type="number" id="bCamp" onchange="saveBudget()" /></div>
+            <div><label class="field-lbl">Boodschappen per dag (€)</label><input type="number" id="bFood" onchange="saveBudget()" /></div>
+          </div>
+          <div class="form-row">
+            <div><label class="field-lbl">Uitjes, terras, ijsjes p/d (€)</label><input type="number" id="bFun" onchange="saveBudget()" /></div>
+            <div><label class="field-lbl">Brandstof &amp; Tol totaal (€)</label><input type="number" id="bFuel" onchange="saveBudget()" /></div>
+          </div>
+          <div class="form-row">
+            <div><label class="field-lbl">Voorbereiding (BOVAG/verzekering) (€)</label><input type="number" id="bPrep" onchange="saveBudget()" /></div>
+            <div><label class="field-lbl">Onvoorzien / Buffer (€)</label><input type="number" id="bBuffer" onchange="saveBudget()" /></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>2. Thuisfront Cashflow (Apr – Jun)</h2>
+              <div class="subtitle">Maarten 1 mnd betaald, Alieke 3 mnd onbetaald, vakantiegeld mei</div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div><label class="field-lbl">Netto salaris tijdens verlof (totaal 3 mnd, €)</label><input type="number" id="bIncome" onchange="saveBudget()" /></div>
+            <div><label class="field-lbl">Vakantiegeld mei samen (netto, €)</label><input type="number" id="bVacPay" onchange="saveBudget()" /></div>
+          </div>
+          <div class="form-row">
+            <div><label class="field-lbl">Vaste lasten thuis per maand (€)</label><input type="number" id="bFixed" onchange="saveBudget()" /></div>
+            <div><label class="field-lbl">Verbruikskosten huisbewaarder p/m (€)</label><input type="number" id="bUtilComp" onchange="saveBudget()" /></div>
+          </div>
+          <div class="card card-soft" style="margin:0; padding:12px; font-size:13px;">
+            💡 <strong>Let op kinderopvangtoeslag:</strong> Controleer bij wettelijk onbetaald ouderschapsverlof vs. gewoon onbetaald verlof of jullie recht op toeslag doorloopt en zet eventuele gewijzigde opvanguren op tijd in Mijn Toeslagen.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 7: HUISBEWARING ==================== -->
+    <section id="tab-huisbewaring" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>Concept-overeenkomst Huisbewaring</h2>
+            <div class="subtitle">Vul de gegevens in en druk met één klik een nette, ondertekenbare PDF af</div>
+          </div>
+          <button class="btn btn-primary" onclick="printContract()">🖨️ Print / PDF Contract</button>
+        </div>
+
+        <div class="card card-ochre" style="padding:13px 16px; font-size:13.5px; margin-bottom:16px;">
+          <strong>Belangrijk bij een huurwoning (Veluwonen):</strong> Huisbewaring mag alléén met voorafgaande schriftelijke toestemming van de woningcorporatie. Je mag geen winst maken; een vergoeding voor daadwerkelijke <strong>verbruikskosten (gas, water, elektra, internet)</strong> is wél gebruikelijk en eerlijk.
+        </div>
+
+        <div class="form-row">
+          <div><label class="field-lbl">Hoofdhuurders</label><input type="text" id="hbOwners" onchange="saveContract()" /></div>
+          <div><label class="field-lbl">Adres woning</label><input type="text" id="hbAddress" onchange="saveContract()" /></div>
+        </div>
+        <div class="form-row">
+          <div><label class="field-lbl">Naam huisbewaarder (buurmeisje)</label><input type="text" id="hbKeeper" placeholder="Volledige voor- en achternaam" onchange="saveContract()" /></div>
+          <div><label class="field-lbl">Telefoon / E-mail huisbewaarder</label><input type="text" id="hbKeeperContact" placeholder="06-..." onchange="saveContract()" /></div>
+        </div>
+        <div class="form-row">
+          <div><label class="field-lbl">Startdatum huisbewaring</label><input type="date" id="hbStart" onchange="saveContract()" /></div>
+          <div><label class="field-lbl">Einddatum huisbewaring</label><input type="date" id="hbEnd" onchange="saveContract()" /></div>
+          <div><label class="field-lbl">Voorschot verbruikskosten p/m (€)</label><input type="number" id="hbCost" onchange="saveContract()" /></div>
+        </div>
+        <div class="form-row">
+          <div><label class="field-lbl">Verhuurder / Corporatie</label><input type="text" id="hbLandlord" onchange="saveContract()" /></div>
+          <div><label class="field-lbl">Noodcontact in NL (bijv. ouders)</label><input type="text" id="hbEmergency" placeholder="Naam + telefoonnummer" onchange="saveContract()" /></div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <label class="field-lbl">Bijzondere afspraken (tuin, post, planten, bijenkasten, robotstofzuiger)</label>
+          <textarea id="hbNotes" rows="3" onchange="saveContract()"></textarea>
+        </div>
+
+        <div class="card card-soft" style="margin:0; padding:16px;">
+          <h3 style="margin-bottom:8px;">Voorvertoning kernafspraken</h3>
+          <div id="contractPreview" style="font-size:13.5px; color:var(--text);"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MOBILE BOTTOM NAVIGATION -->
+  <nav class="mobile-nav" id="mobileNav">
+    <button class="mob-btn active" data-tab="overzicht"><span class="mob-ico">🧭</span><span>Start</span></button>
+    <button class="mob-btn" data-tab="route"><span class="mob-ico">🗺️</span><span>Route</span></button>
+    <button class="mob-btn" data-tab="kip"><span class="mob-ico">🚐</span><span>Kip 40T</span></button>
+    <button class="mob-btn" data-tab="paklijst"><span class="mob-ico">🎒</span><span>Paklijst</span></button>
+    <button class="mob-btn" data-tab="draaiboek"><span class="mob-ico">✅</span><span>Taken</span></button>
+    <button class="mob-btn" data-tab="budget"><span class="mob-ico">💶</span><span>Budget</span></button>
+    <button class="mob-btn" data-tab="huisbewaring"><span class="mob-ico">🏠</span><span>Huis</span></button>
+  </nav>
+
+  <!-- SYNC & APP MODAL -->
+  <div class="modal-backdrop" id="syncModal" onclick="if(event.target===this) closeSyncModal()">
+    <div class="modal">
+      <div class="card-header">
+        <div>
+          <h2>App &amp; Live Sync (Supabase)</h2>
+          <div class="subtitle">Werk realtime samen op twee telefoons — ook offline op de camping</div>
+        </div>
+        <button class="btn btn-sm" onclick="closeSyncModal()">Sluiten ✕</button>
+      </div>
+
+      <div class="card card-sage" style="padding:12px 14px; font-size:13px; margin-bottom:14px;">
+        <strong>Status:</strong> <span id="syncStatusDetail">Alleen lokaal op dit apparaat opgeslagen.</span>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
+        <div>
+          <label class="field-lbl">Supabase Project URL</label>
+          <input type="url" id="sbUrl" placeholder="https://jouwproject.supabase.co" />
+        </div>
+        <div>
+          <label class="field-lbl">Supabase Publishable Key (of oude Anon Key)</label>
+          <input type="text" id="sbKey" placeholder="sb_publishable_... of eyJhbGci..." />
+        </div>
+        <div>
+          <label class="field-lbl">Gezinscode (op beide telefoons gelijk)</label>
+          <input type="text" id="sbRoom" value="schraa-voorjaar-27" />
+        </div>
+      </div>
+
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;">
+        <button class="btn btn-primary" onclick="saveAndConnectSync()">Verbinden &amp; Opslaan</button>
+        <button class="btn" onclick="pullFromCloud(true)">↓ Ophalen uit cloud</button>
+        <button class="btn" onclick="pushToCloud(true)">↑ Naar cloud sturen</button>
+      </div>
+
+      <div class="card card-soft" style="padding:14px; margin-bottom:14px;">
+        <h3 style="margin-bottom:6px; font-size:15px;">Jip-en-Janneke: Zo zet je hem op je telefoon</h3>
+        <ol style="margin:0; padding-left:18px; font-size:13px; display:flex; flex-direction:column; gap:6px;">
+          <li><strong>Online zetten:</strong> Upload de 5 app-bestanden uit het ZIP-mapje naar GitHub Pages (of sleep het mapje naar <em>app.netlify.com/drop</em>).</li>
+          <li><strong>Supabase koppelen:</strong> Maak een gratis project op <em>supabase.com</em>, plak het bestand <code>supabase-setup.sql</code> in de SQL Editor en klik op <em>Run</em>. Kopieer daarna je <em>Project URL</em> en <em>anon key</em> hierboven.</li>
+          <li><strong>Installeren:</strong> Open jullie link op Android (Chrome → <em>App installeren</em>) of iPhone (Safari → Deel-icoon → <em>Zet op beginscherm</em>).</li>
+        </ol>
+      </div>
+
+      <div style="display:flex; gap:8px; flex-wrap:wrap; border-top:1px solid var(--border); padding-top:12px;">
+        <button class="btn btn-sm" onclick="exportBackup()">💾 Backup opslaan (JSON)</button>
+        <label class="btn btn-sm" style="cursor:pointer;">
+          📂 Backup herstellen
+          <input type="file" accept=".json" style="display:none;" onchange="importBackup(event)" />
+        </label>
+        <button class="btn btn-sm btn-danger" onclick="resetDefaults()">↺ Standaardwaarden</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRINT CONTAINER -->
+  <div id="print-area"></div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEY = 'veldgids_voorjaar_27_state_v2';
+    const SYNC_CFG_KEY = 'veldgids_voorjaar_27_sync_v2';
+    const START_DATE_STR = '2027-04-07';
+
+    const DEFAULT_STATE = {
+      updatedAt: 0,
+      bikeConfig: 'mtb1e',
+      kipCurb: 740,
+      kipMax: 1000,
+      stops: [
+        { id: 1, name: 'Elzas / Zwarte Woud (Tussenstop)', country: 'Duitsland / Frankrijk', nights: 3, notes: 'Rustig inkomen na vertrek uit Hoenderloo. Niet te veel km op dag 1.' },
+        { id: 2, name: 'Ponzano Monferrato (Piemonte)', country: 'Italië', nights: 7, notes: 'Bij ons bevriende stel tussen Milaan en Turijn! Wijnheuvels, bijkletsen, rustige start.' },
+        { id: 3, name: 'Toscane / Umbrië (Agricamping)', country: 'Italië', nights: 14, notes: 'Voorjaarszon pakken (20°C), kleine boerencampings, bloesem en rustige stadjes.' },
+        { id: 4, name: 'Adriatische Kust / Venetië-regio', country: 'Italië', nights: 8, notes: 'Camping met verwarmd peuterzwembadje & strand voor Abel en Fieke.' },
+        { id: 5, name: 'Istrië / Kvarner (Binnenland & Kust)', country: 'Kroatië', nights: 14, notes: 'Groen binnenland + rustige baaitjes vóór de zomerdrukte. Heerlijk MTB-terrein.' },
+        { id: 6, name: 'Soča-vallei & Bohinj / Bled-regio', country: 'Slovenië', nights: 15, notes: 'Bewust hier tijdens Zuid-Duitse Pfingstferien! Helderblauwe rivieren, MTB en natuurcampings.' },
+        { id: 7, name: 'Karinthië / Dolomieten (Meetup Opa & Oma)', country: 'Oostenrijk', nights: 14, notes: 'Samen met Opa & Oma in de camper! Bergmeren, kabelbaantjes, speeltuinen en wandelen.' },
+        { id: 8, name: 'Beieren / Altmühltal (Terugreis)', country: 'Duitsland / Frankrijk', nights: 6, notes: 'Relaxte afsluiter in twee etappes terug naar Hoenderloo in Week 26.' }
+      ],
+      places: [
+        { id: 101, name: 'Bevriend stel — Ponzano Monferrato', country: 'Italië', type: 'Vrienden / Familie', url: 'https://maps.app.goo.gl/56pGMD9K6amGbUwx7?g_st=ac' },
+        { id: 102, name: 'Onze volledige Google Maps verzamellijst', country: 'Onderweg', type: 'Boerencamping', url: 'https://maps.app.goo.gl/56pGMD9K6amGbUwx7?g_st=ac' }
+      ],
+      gear: [
+        { id: 1, name: 'Voortent met uitritsbare wanden + stokken', kg: 34, loc: 'auto' },
+        { id: 2, name: '2x Lichtgewicht gasfles (gevuld)', kg: 20, loc: 'kip' },
+        { id: 3, name: 'Kleding gezin (april t/m juni)', kg: 38, loc: 'kip' },
+        { id: 4, name: 'Keukenuitrusting, pannen, koffie & voorraad', kg: 28, loc: 'kip' },
+        { id: 5, name: 'Buitenstoelen (4x), tafel & kleed', kg: 22, loc: 'auto' },
+        { id: 6, name: 'Beddengoed, slaapzakken & kussens', kg: 16, loc: 'kip' },
+        { id: 7, name: 'Kinderstoel, inklapbaar badje, buggy & speelgoed', kg: 20, loc: 'auto' },
+        { id: 8, name: 'Kabels, watertank (halfvol), keggen & gereedschap', kg: 18, loc: 'kip' },
+        { id: 9, name: 'Keramisch kacheltje + 12V ventilator + klusspul', kg: 10, loc: 'kip' },
+        { id: 10, name: 'MTB uitrusting (helm, schoenen, pomp, reserveband)', kg: 12, loc: 'auto' }
+      ],
+      packList: [
+        // Kip 40T & Techniek
+        { id: 1, cat: 'Kip 40T & Techniek', text: '2x lichtgewicht gasfles + drukregelaar (gecheckt)', who: 'Maarten', done: false },
+        { id: 2, cat: 'Kip 40T & Techniek', text: 'Keramisch kacheltje (500/1000W) voor koude aprilavonden', who: 'Maarten', done: false },
+        { id: 3, cat: 'Kip 40T & Techniek', text: 'CEE-stroomkabel (25m) + verloopstekker + stekkerdoos', who: 'Maarten', done: false },
+        { id: 4, cat: 'Kip 40T & Techniek', text: 'Oprijkeggen, waterpas, haringen (ook rotspennen!) & hamer', who: 'Maarten', done: false },
+        { id: 5, cat: 'Kip 40T & Techniek', text: 'Voortent met uitritsbare zij- & voorkant + stormbanden', who: 'Maarten', done: false },
+        { id: 6, cat: 'Kip 40T & Techniek', text: '12V koelkastventilator (voor warme dagen in juni)', who: 'Maarten', done: false },
+        { id: 7, cat: 'Kip 40T & Techniek', text: 'Gereedschapssetje, ducttape, tie-wraps, WD-40 & zekeringen', who: 'Maarten', done: false },
+        { id: 8, cat: 'Kip 40T & Techniek', text: 'Disselslot, wielklem & reservewiel Kip op spanning', who: 'Maarten', done: false },
+        // Abel & Fieke
+        { id: 10, cat: 'Abel & Fieke', text: 'Opvouwbaar badje / flexibele teil (badderen + plonsbadje)', who: 'Alieke', done: false },
+        { id: 11, cat: 'Abel & Fieke', text: 'Uitvalbeveiliging bed / Deryan-tentje & verduisteringsdoek', who: 'Samen', done: false },
+        { id: 12, cat: 'Abel & Fieke', text: 'Compacte buggy + ergonomische draagzak (voor bergwandelingen)', who: 'Alieke', done: false },
+        { id: 13, cat: 'Abel & Fieke', text: 'Loopfiets / kinderfietsje + helmpjes voor Abel & Fieke', who: 'Maarten', done: false },
+        { id: 14, cat: 'Abel & Fieke', text: 'Favoriete knuffels, dino’s, schepjes, emmertje & voorleesboekjes', who: 'Alieke', done: false },
+        { id: 15, cat: 'Abel & Fieke', text: 'Zwembandjes / Puddle Jumper, UV-pakjes & waterschoentjes', who: 'Alieke', done: false },
+        { id: 16, cat: 'Abel & Fieke', text: 'Luiers/billendoekjes startvoorraad + potje voor op de camping', who: 'Alieke', done: false },
+        // Kleding Voorjaar & Zomer
+        { id: 20, cat: 'Kleding Voorjaar & Zomer', text: 'Laagjes voor april: merino/fleece vesten, regenjassen & mutsen', who: 'Alieke', done: false },
+        { id: 21, cat: 'Kleding Voorjaar & Zomer', text: 'Regenlaarsjes + dichte wandelschoenen voor alle vier', who: 'Samen', done: false },
+        { id: 22, cat: 'Kleding Voorjaar & Zomer', text: 'Zomerkleding mei/juni: korte broeken, shirts, jurkjes, petjes', who: 'Alieke', done: false },
+        { id: 23, cat: 'Kleding Voorjaar & Zomer', text: 'Zwemkleding & sneldrogende microvezel handdoeken', who: 'Alieke', done: false },
+        { id: 24, cat: 'Kleding Voorjaar & Zomer', text: 'Waslijn, knijpers, wasmiddelbladen & inklapbare wasmand', who: 'Alieke', done: false },
+        // Fietsen & Buiten
+        { id: 30, cat: 'Fietsen & Buiten', text: 'MTB + fietsschoenen, helm, bidons & reparatiesetje (binnenband/CO2)', who: 'Maarten', done: false },
+        { id: 31, cat: 'Fietsen & Buiten', text: 'E-bike(s) + oplader(s) + kinderzitje (accu’s tijdens rijden in auto!)', who: 'Maarten', done: false },
+        { id: 32, cat: 'Fietsen & Buiten', text: 'Goede kettingsloten (ART) voor fietsen op de camping', who: 'Maarten', done: false },
+        { id: 33, cat: 'Fietsen & Buiten', text: '4 kampeerstoelen, klaptafel, kleed & sfeerverlichting/hoofdlampjes', who: 'Samen', done: false },
+        { id: 34, cat: 'Fietsen & Buiten', text: 'GoPro / camera + opladers + powerbank', who: 'Maarten', done: false },
+        // Keuken & Eten
+        { id: 40, cat: 'Keuken & Eten', text: 'Koffiezet-setup (Bialetti/Aeropress) + voorraad goede bonen', who: 'Maarten', done: false },
+        { id: 41, cat: 'Keuken & Eten', text: 'Buitenkooktoestel / Skottelbraai + pannen, snijplank & scherp mes', who: 'Samen', done: false },
+        { id: 42, cat: 'Keuken & Eten', text: 'Kinderservies, drinkbekers, broodtrommels & koelboxje voor onderweg', who: 'Alieke', done: false },
+        { id: 43, cat: 'Keuken & Eten', text: 'Basisvoorraad kruiden, olijfolie, afwasmiddel, theedoeken & vuilniszakken', who: 'Alieke', done: false },
+        // Papieren & Veiligheid
+        { id: 50, cat: 'Papieren & Veiligheid', text: 'Paspoorten/ID-kaarten van Maarten, Alieke, Abel & Fieke', who: 'Samen', done: false },
+        { id: 51, cat: 'Papieren & Veiligheid', text: 'Rijbewijzen, kentekenbewijs auto & Kip 40T + APARTE Groene Kaart Kip', who: 'Maarten', done: false },
+        { id: 52, cat: 'Papieren & Veiligheid', text: '4x fysieke EHIC zorgpas + polisblad reisverzekering (90+ dagen)', who: 'Alieke', done: false },
+        { id: 53, cat: 'Papieren & Veiligheid', text: 'ACSI CampingCard 2027 + tolbadge (Bip&Go/Fulli) + vignetten AT/SI', who: 'Maarten', done: false },
+        { id: 54, cat: 'Papieren & Veiligheid', text: '4x veiligheidshesje, gevarendriehoek, verbandtrommel & reservelampjes', who: 'Maarten', done: false },
+        // EHBO & Drogist
+        { id: 60, cat: 'EHBO & Drogist', text: 'NL kinderparacetamol / zetpillen + thermometer + ORS', who: 'Alieke', done: false },
+        { id: 61, cat: 'EHBO & Drogist', text: 'Goede tekentang + ontsmetting + pleisters + pincet', who: 'Alieke', done: false },
+        { id: 62, cat: 'EHBO & Drogist', text: 'Zonnebrand factor 50 (kinderen), aftersun & anti-muggen (DEET/Icaridin)', who: 'Alieke', done: false }
+      ],
+      tasks: [
+        { id: 1, phase: 'Nov – Dec 2026', text: 'Verlof formeel vastleggen (Maarten 1 mnd betaald + onbetaald; Alieke 3 mnd onbetaald)', who: 'Samen', done: false },
+        { id: 2, phase: 'Nov – Dec 2026', text: 'Huisbewaring officieel aanvragen bij Veluwonen (doorlooptijd meenemen)', who: 'Samen', done: false },
+        { id: 3, phase: 'Nov – Dec 2026', text: 'Met buurmeisje huisbewaring & vergoeding verbruikskosten afstemmen', who: 'Samen', done: false },
+        { id: 4, phase: 'Nov – Dec 2026', text: 'Kinderopvang & Belastingdienst checken (toeslag bij onbetaald verlof + wachtlijst Fieke)', who: 'Alieke', done: false },
+        { id: 5, phase: 'Nov – Dec 2026', text: 'Basisschool & BSO voor Abel (4 jaar in juli 2027) & wendagen alvast afstemmen', who: 'Samen', done: false },
+        { id: 6, phase: 'Januari 2027', text: 'BOVAG-onderhoud Kip 40T inplannen (remmen, gasslang/regelaar, bandenleeftijd < 6 jr)', who: 'Maarten', done: false },
+        { id: 7, phase: 'Januari 2027', text: 'Reisverzekering verhogen van 60 dagen naar 90+ dagen aaneengesloten', who: 'Alieke', done: false },
+        { id: 8, phase: 'Januari 2027', text: 'ANWB/pechhulp checken op Europa + Aanhangwagenservice + vervangend vervoer met trekhaak', who: 'Maarten', done: false },
+        { id: 9, phase: 'Januari 2027', text: 'Inboedelverzekering informeren over 3 maanden huisbewaring', who: 'Samen', done: false },
+        { id: 10, phase: 'Januari 2027', text: 'Paspoorten/ID-kaarten van alle vier checken op geldigheid t/m eind 2027', who: 'Alieke', done: false },
+        { id: 11, phase: 'Februari 2027', text: 'Collega-imker vastleggen voor bijenkasten (mei/juni = zwermseizoen + Aziatische hoornaar!)', who: 'Maarten', done: false },
+        { id: 12, phase: 'Februari 2027', text: 'Aparte Groene Kaart aanvragen voor de Kip 40T bij autoverzekeraar', who: 'Maarten', done: false },
+        { id: 13, phase: 'Februari 2027', text: 'ACSI CampingCard 2027 bestellen + tolbadge (Bip&Go/Fulli) regelen', who: 'Maarten', done: false },
+        { id: 14, phase: 'Februari 2027', text: 'Bezoekdata afstemmen met vrienden Ponzano Monferrato & camper-meetup Opa en Oma', who: 'Samen', done: false },
+        { id: 15, phase: 'Februari 2027', text: 'Definitieve keuze fietsen (1 vs 2 e-bikes + MTB) & dakdragers testen', who: 'Maarten', done: false },
+        { id: 16, phase: 'Maart 2027', text: 'Verplicht proefweekend met de Kip 40T (kachel, koelkast, slaapopstelling & voortent testen)', who: 'Samen', done: false },
+        { id: 17, phase: 'Maart 2027', text: 'Grote beurt trekauto + airco-check + vignetten Oostenrijk & Slovenië regelen', who: 'Maarten', done: false },
+        { id: 18, phase: 'Maart 2027', text: '4x fysieke EHIC-zorgpas controleren/aanvragen + kinder-EHBO aanvullen', who: 'Alieke', done: false },
+        { id: 19, phase: 'Maart 2027', text: 'Overeenkomst huisbewaring met buurmeisje tekenen + sleuteloverdracht plannen', who: 'Samen', done: false },
+        { id: 20, phase: 'Maart 2027', text: '12V-ventilator achter koelkastrooster Kip monteren (klaar voor juni-warmte)', who: 'Maarten', done: false },
+        { id: 21, phase: 'Vertrekweek (Apr 2027)', text: 'Geladen Kip 40T & auto langs de weegbrug (max 1.000 kg + kogeldruk check!)', who: 'Maarten', done: false },
+        { id: 22, phase: 'Vertrekweek (Apr 2027)', text: 'Meterstanden (gas/water/elektra) fotograferen met buurmeisje', who: 'Samen', done: false },
+        { id: 23, phase: 'Vertrekweek (Apr 2027)', text: 'PDF Roadbook uitprinten voor in het dashboardkastje + offline kaarten downloaden', who: 'Maarten', done: false },
+        { id: 24, phase: 'Vertrekweek (Apr 2027)', text: 'Woensdag 7 april 2027: aanhaken en gaan! 🚐☀️', who: 'Samen', done: false }
+      ],
+      budget: {
+        camp: 28,
+        food: 30,
+        fun: 20,
+        fuel: 1450,
+        prep: 650,
+        buffer: 500,
+        income: 2800,
+        vacPay: 3200,
+        fixed: 2200,
+        utilComp: 220
+      },
+      contract: {
+        owners: 'Maarten & Alieke Schraa',
+        address: 'Hoenderloo (woning Veluwonen)',
+        keeper: '',
+        keeperContact: '',
+        start: '2027-04-07',
+        end: '2027-06-30',
+        cost: 220,
+        landlord: 'Woningcorporatie Veluwonen',
+        emergency: 'Ouders Maarten / Alieke',
+        notes: 'Huisbewaarder verzorgt de kamerplanten, leegt de brievenbus (stuurt foto van belangrijke post) en houdt de tuin netjes bij. Bijenkasten worden separaat verzorgd door collega-imker. Geen huisdieren of onderverhuur zonder overleg.'
+      }
+    };
+
+    let state = loadLocalState();
+    let packFilter = 'all';
+    let taskFilter = 'all';
+    let syncTimer = null;
+
+    function deepClone(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+    function loadLocalState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return deepClone(DEFAULT_STATE);
+        const parsed = JSON.parse(raw);
+        return Object.assign(deepClone(DEFAULT_STATE), parsed);
+      } catch (e) {
+        return deepClone(DEFAULT_STATE);
+      }
+    }
+
+    function saveState(skipCloud) {
+      state.updatedAt = Date.now();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderAll();
+      if (!skipCloud) scheduleCloudPush();
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    // --- NAVIGATION ---
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      const panel = document.getElementById('tab-' + tabId);
+      if (panel) panel.classList.add('active');
+      document.querySelectorAll('[data-tab]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('[data-tab]').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    // --- DATE HELPERS ---
+    function addDays(dateObj, days) {
+      const d = new Date(dateObj.getTime());
+      d.setDate(d.getDate() + days);
+      return d;
+    }
+    function fmtShortDate(d) {
+      return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' });
+    }
+    function getISOWeek(d) {
+      const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+      const dayNum = t.getUTCDay() || 7;
+      t.setUTCDate(t.getUTCDate() + 4 - dayNum);
+      const yearStart = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+      return Math.ceil((((t - yearStart) / 86400000) + 1) / 7);
+    }
+
+    // --- RENDER COUNTDOWN & OVERVIEW ---
+    function renderOverview() {
+      const now = new Date();
+      const target = new Date('2027-04-07T08:00:00');
+      const diff = Math.max(0, target - now);
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const weeks = Math.floor(days / 7);
+      const remDays = days % 7;
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+
+      document.getElementById('countdownRow').innerHTML = `
+        <div class="cd-box"><div class="cd-num">${days}</div><div class="cd-lbl">Dagen</div></div>
+        <div class="cd-box"><div class="cd-num">${weeks}w ${remDays}d</div><div class="cd-lbl">Weken</div></div>
+        <div class="cd-box"><div class="cd-num">${hours}</div><div class="cd-lbl">Uren</div></div>
+      `;
+
+      const totalNights = state.stops.reduce((s, x) => s + Number(x.nights || 0), 0);
+      const returnDate = addDays(new Date(START_DATE_STR + 'T12:00:00'), totalNights);
+      const retWeek = getISOWeek(returnDate);
+      document.getElementById('kpiNights').textContent = `${totalNights} nachten`;
+      document.getElementById('kpiReturnDate').textContent = `Thuis ${fmtShortDate(returnDate)} (Week ${retWeek})`;
+
+      const kipGearKg = state.gear.filter(g => g.loc === 'kip').reduce((s, g) => s + Number(g.kg || 0), 0);
+      const totalKip = Number(state.kipCurb || 740) + kipGearKg;
+      const remain = Number(state.kipMax || 1000) - totalKip;
+      document.getElementById('kpiWeight').textContent = `${totalKip} kg`;
+      document.getElementById('kpiWeightSub').textContent = remain >= 0 ? `Nog ${remain} kg marge` : `⚠️ ${Math.abs(remain)} kg te zwaar!`;
+
+      const tasksDone = state.tasks.filter(t => t.done).length;
+      document.getElementById('kpiTasks').textContent = `${tasksDone} / ${state.tasks.length}`;
+      document.getElementById('kpiTasksSub').textContent = `${Math.round((tasksDone / Math.max(1, state.tasks.length)) * 100)}% afgerond`;
+
+      const packDone = state.packList.filter(p => p.done).length;
+      document.getElementById('kpiPack').textContent = `${packDone} / ${state.packList.length}`;
+      document.getElementById('kpiPackSub').textContent = `${Math.round((packDone / Math.max(1, state.packList.length)) * 100)}% ingepakt`;
+    }
+
+    // --- RENDER ROUTE & PLACES ---
+    function renderRoute() {
+      let cursor = new Date(START_DATE_STR + 'T12:00:00');
+      const html = state.stops.map((s, idx) => {
+        const start = new Date(cursor.getTime());
+        const end = addDays(start, Number(s.nights || 1));
+        cursor = end;
+        const wk = getISOWeek(start);
+        return `
+          <div class="stop-item">
+            <div class="stop-num">${idx + 1}</div>
+            <div>
+              <div class="stop-dates">${fmtShortDate(start)} – ${fmtShortDate(end)} • Week ${wk} • <span class="badge badge-slate">${esc(s.country)}</span></div>
+              <div class="stop-title">${esc(s.name)}</div>
+              <div class="stop-notes">${esc(s.notes || '')}</div>
+            </div>
+            <div class="stop-controls">
+              <div class="nights-ctrl">
+                <button onclick="changeNights(${s.id}, -1)">−</button>
+                <span>${s.nights} n.</span>
+                <button onclick="changeNights(${s.id}, 1)">+</button>
+              </div>
+              <button class="btn btn-icon" title="Omhoog" onclick="moveStop(${idx}, -1)" ${idx===0?'disabled':''}>↑</button>
+              <button class="btn btn-icon" title="Omlaag" onclick="moveStop(${idx}, 1)" ${idx===state.stops.length-1?'disabled':''}>↓</button>
+              <button class="btn btn-icon btn-danger" title="Verwijder" onclick="deleteStop(${s.id})">✕</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('routeList').innerHTML = html || '<p class="subtitle">Nog geen etappes toegevoegd.</p>';
+
+      const pHtml = state.places.map(p => `
+        <div class="gear-row">
+          <div>
+            <div style="font-weight:700; font-size:14px;">${esc(p.name)}</div>
+            <div style="display:flex; gap:6px; margin-top:3px; flex-wrap:wrap;">
+              <span class="badge badge-sage">${esc(p.country)}</span>
+              <span class="badge badge-ochre">${esc(p.type)}</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:6px; align-items:center;">
+            ${p.url ? `<a class="btn btn-sm" href="${esc(p.url)}" target="_blank" rel="noopener">Kaart ↗</a>` : ''}
+            <button class="btn btn-icon btn-danger" onclick="deletePlace(${p.id})">✕</button>
+          </div>
+        </div>
+      `).join('');
+      document.getElementById('placesList').innerHTML = pHtml || '<p class="subtitle">Voeg jullie favoriete campings toe of importeer ze in bulk.</p>';
+    }
+
+    function toggleAddStop() {
+      const b = document.getElementById('addStopBox');
+      b.style.display = b.style.display === 'none' ? 'block' : 'none';
+    }
+    function addStop() {
+      const name = document.getElementById('newStopName').value.trim();
+      if (!name) return;
+      state.stops.push({
+        id: Date.now(),
+        name,
+        country: document.getElementById('newStopCountry').value,
+        nights: Math.max(1, Number(document.getElementById('newStopNights').value) || 4),
+        notes: document.getElementById('newStopNotes').value.trim()
+      });
+      document.getElementById('newStopName').value = '';
+      document.getElementById('newStopNotes').value = '';
+      toggleAddStop();
+      saveState();
+      showToast('Etappe toegevoegd');
+    }
+    function changeNights(id, delta) {
+      const s = state.stops.find(x => x.id === id);
+      if (s) { s.nights = Math.max(1, Number(s.nights) + delta); saveState(); }
+    }
+    function moveStop(idx, dir) {
+      const to = idx + dir;
+      if (to < 0 || to >= state.stops.length) return;
+      const tmp = state.stops[idx];
+      state.stops[idx] = state.stops[to];
+      state.stops[to] = tmp;
+      saveState();
+    }
+    function deleteStop(id) {
+      if (!confirm('Etappe verwijderen?')) return;
+      state.stops = state.stops.filter(s => s.id !== id);
+      saveState();
+    }
+    function addPlace() {
+      const name = document.getElementById('placeName').value.trim();
+      if (!name) return;
+      state.places.unshift({
+        id: Date.now(),
+        name,
+        country: document.getElementById('placeCountry').value,
+        type: document.getElementById('placeType').value,
+        url: document.getElementById('placeUrl').value.trim()
+      });
+      document.getElementById('placeName').value = '';
+      document.getElementById('placeUrl').value = '';
+      saveState();
+      showToast('Plek opgeslagen in kluis');
+    }
+    function deletePlace(id) {
+      state.places = state.places.filter(p => p.id !== id);
+      saveState();
+    }
+    function importBulkText() {
+      const raw = document.getElementById('bulkPlaces').value.trim();
+      if (!raw) return;
+      const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      lines.forEach((line, i) => {
+        state.places.push({ id: Date.now() + i, name: line, country: 'Onderweg', type: 'Boerencamping', url: '' });
+      });
+      document.getElementById('bulkPlaces').value = '';
+      saveState();
+      showToast(`${lines.length} plekken geïmporteerd`);
+    }
+    function importCsvFile(evt) {
+      const file = evt.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const lines = e.target.result.split(/\r?\n/).filter(Boolean);
+        let added = 0;
+        lines.forEach((line, i) => {
+          if (i === 0 && /title|name|naam/i.test(line)) return;
+          const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+          if (cols[0]) {
+            const urlCol = cols.find(c => /^https?:\/\//i.test(c)) || '';
+            state.places.push({ id: Date.now() + i, name: cols[0], country: 'Onderweg', type: 'Boerencamping', url: urlCol });
+            added++;
+          }
+        });
+        saveState();
+        showToast(`${added} plekken uit CSV geladen`);
+      };
+      reader.readAsText(file);
+    }
+
+    // --- RENDER KIP 40T & FIETSEN ---
+    function renderKip() {
+      document.getElementById('kipCurb').value = state.kipCurb;
+      document.getElementById('kipMax').value = state.kipMax;
+
+      const kipGearKg = state.gear.filter(g => g.loc === 'kip').reduce((s, g) => s + Number(g.kg || 0), 0);
+      const autoGearKg = state.gear.filter(g => g.loc === 'auto').reduce((s, g) => s + Number(g.kg || 0), 0);
+      const totalKip = Number(state.kipCurb || 740) + kipGearKg;
+      const maxKip = Number(state.kipMax || 1000);
+      const remain = maxKip - totalKip;
+      const pct = Math.min(100, Math.round((totalKip / maxKip) * 100));
+
+      document.getElementById('kipTotalKg').textContent = totalKip;
+      document.getElementById('kipRemainKg').textContent = remain;
+      document.getElementById('autoTotalKg').textContent = `${autoGearKg} kg`;
+
+      const fill = document.getElementById('kipProgFill');
+      fill.style.width = pct + '%';
+      fill.className = 'prog-fill ' + (remain < 0 ? 'danger' : remain < 40 ? 'warn' : '');
+
+      const badge = document.getElementById('weightStatusBadge');
+      if (remain < 0) {
+        badge.className = 'badge badge-warn';
+        badge.textContent = `⚠️ ${Math.abs(remain)} kg overbeladen`;
+      } else if (remain < 40) {
+        badge.className = 'badge badge-ochre';
+        badge.textContent = `Krap (${remain} kg over)`;
+      } else {
+        badge.className = 'badge badge-sage';
+        badge.textContent = `Veilig (${remain} kg marge)`;
+      }
+
+      document.getElementById('gearList').innerHTML = state.gear.map(g => `
+        <div class="gear-row">
+          <div style="font-size:13.5px; flex:1;">
+            <strong>${esc(g.name)}</strong> <span style="color:var(--muted);">(${g.kg} kg)</span>
+          </div>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <button class="loc-toggle ${g.loc==='kip'?'loc-kip':'loc-auto'}" onclick="toggleGearLoc(${g.id})">
+              ${g.loc === 'kip' ? '🚐 In Kip' : '🚗 In Auto'}
+            </button>
+            <button class="btn btn-icon btn-danger" onclick="deleteGear(${g.id})">✕</button>
+          </div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('#bikeConfigBtns .chip').forEach(c => {
+        c.classList.toggle('active', c.dataset.bike === state.bikeConfig);
+      });
+
+      const advices = {
+        mtb1e: {
+          title: 'MTB (11 kg) + 1 E-bike (22 kg zonder accu) — De gouden middenweg',
+          dak: '~33 kg (incl. dragers ~41 kg — ruim binnen normale daklast van 75 kg)',
+          text: 'Ideale keuze voor jullie gezin! Eén e-bike met kinderzitje voor boodschappen/uitjes met Abel of Fieke, en de lichte MTB voor Maarten op trails in Italië, Slovenië en Oostenrijk. Beide fietsen kunnen op het autodak (houdt de Kip-dissel licht!) of 1 op het dak en 1 op de dissel. Accu altijd in de kofferbak.'
+        },
+        mtb2e: {
+          title: 'MTB (11 kg) + 2 E-bikes (44 kg zonder accu’s) — Zwaarder puzzelen',
+          dak: '~55 kg + 3 dakdragers (~66 kg) — let scherp op max. daklast auto (vaak 75 kg)',
+          text: 'Technisch haalbaar als je accu’s (ca. 6 kg samen) in de auto legt en een degelijke dakdrager hebt. Op de Kip-dissel twee e-bikes zetten (45+ kg + drager = ~60 kg) maakt de kogeldruk bijna altijd te hoog. Tip: check of 2 e-bikes écht nodig zijn als jullie vaak samen wandelen of met de auto eropuit gaan.'
+        },
+        mtbonly: {
+          title: 'Alleen MTB (11 kg) + Loopfietsjes — Maximaal licht & simpel',
+          dak: '~15 kg totaal — nauwelijks extra verbruik en super stabiel rijden',
+          text: 'Meest relaxte opzet bij veel verplaatsen. Voor lokale fietstochtjes met z’n vieren huur je op topplekken (zoals Slovenië of Oostenrijk) makkelijk een dagje een e-bike met fietskar.'
+        }
+      };
+      const adv = advices[state.bikeConfig] || advices.mtb1e;
+      document.getElementById('bikeAdviceBox').innerHTML = `
+        <div style="font-weight:700; font-size:14.5px; margin-bottom:6px;">${adv.title}</div>
+        <div style="font-size:12.5px; color:var(--sage-dark); font-weight:700; margin-bottom:8px;">Gewicht / Daklast: ${adv.dak}</div>
+        <div style="font-size:13.5px; color:var(--text);">${adv.text}</div>
+      `;
+    }
+
+    function updateKipSettings() {
+      state.kipCurb = Number(document.getElementById('kipCurb').value) || 740;
+      state.kipMax = Number(document.getElementById('kipMax').value) || 1000;
+      saveState();
+    }
+    function toggleGearLoc(id) {
+      const g = state.gear.find(x => x.id === id);
+      if (g) { g.loc = g.loc === 'kip' ? 'auto' : 'kip'; saveState(); }
+    }
+    function addGear() {
+      const name = document.getElementById('newGearName').value.trim();
+      const kg = Number(document.getElementById('newGearKg').value);
+      if (!name || !kg) return;
+      state.gear.push({ id: Date.now(), name, kg, loc: 'kip' });
+      document.getElementById('newGearName').value = '';
+      document.getElementById('newGearKg').value = '';
+      saveState();
+    }
+    function deleteGear(id) {
+      state.gear = state.gear.filter(g => g.id !== id);
+      saveState();
+    }
+    function setBikeConfig(cfg) {
+      state.bikeConfig = cfg;
+      saveState();
+    }
+
+    // --- RENDER PAKLIJST ---
+    function setPackFilter(f) {
+      packFilter = f;
+      document.querySelectorAll('#packFilters .chip').forEach(c => c.classList.toggle('active', c.dataset.pf === f));
+      renderPackList();
+    }
+    function renderPackList() {
+      const total = state.packList.length;
+      const done = state.packList.filter(p => p.done).length;
+      document.getElementById('packProgressTxt').textContent = `${done} / ${total} ingepakt`;
+      document.getElementById('packProgFill').style.width = `${Math.round((done / Math.max(1, total)) * 100)}%`;
+
+      const filtered = state.packList.filter(p => {
+        if (packFilter === 'todo') return !p.done;
+        if (packFilter === 'done') return p.done;
+        if (['Maarten', 'Alieke', 'Samen'].includes(packFilter)) return p.who === packFilter;
+        return true;
+      });
+
+      const cats = [...new Set(filtered.map(p => p.cat))];
+      const html = cats.map(cat => {
+        const items = filtered.filter(p => p.cat === cat);
+        const catDone = items.filter(i => i.done).length;
+        return `
+          <div style="margin-bottom:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <h3 style="font-size:15.5px;">${esc(cat)}</h3>
+              <span class="badge badge-sage">${catDone}/${items.length}</span>
+            </div>
+            <div style="border:1px solid var(--border); border-radius:12px; overflow:hidden; background:#fff;">
+              ${items.map(item => `
+                <div class="check-row ${item.done?'done':''}">
+                  <input type="checkbox" ${item.done?'checked':''} onchange="togglePack(${item.id})" />
+                  <div class="check-text">${esc(item.text)}</div>
+                  <button class="assignee-btn" onclick="cyclePackWho(${item.id})">${esc(item.who)}</button>
+                  <button class="btn btn-icon btn-danger" style="width:26px;height:26px;font-size:11px;" onclick="deletePack(${item.id})">✕</button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('packCategories').innerHTML = html || '<p class="subtitle">Geen items in dit filter.</p>';
+    }
+    function togglePack(id) {
+      const it = state.packList.find(x => x.id === id);
+      if (it) { it.done = !it.done; saveState(); }
+    }
+    function cyclePackWho(id) {
+      const order = ['Samen', 'Maarten', 'Alieke'];
+      const it = state.packList.find(x => x.id === id);
+      if (it) { it.who = order[(order.indexOf(it.who) + 1) % order.length]; saveState(); }
+    }
+    function addPackItem() {
+      const text = document.getElementById('newPackItem').value.trim();
+      if (!text) return;
+      state.packList.push({
+        id: Date.now(),
+        cat: document.getElementById('newPackCat').value,
+        text,
+        who: document.getElementById('newPackWho').value,
+        done: false
+      });
+      document.getElementById('newPackItem').value = '';
+      saveState();
+      showToast('Item toegevoegd aan paklijst');
+    }
+    function deletePack(id) {
+      state.packList = state.packList.filter(x => x.id !== id);
+      saveState();
+    }
+
+    // --- RENDER DRAAIBOEK ---
+    function setTaskFilter(f) {
+      taskFilter = f;
+      document.querySelectorAll('#taskFilters .chip').forEach(c => c.classList.toggle('active', c.dataset.tf === f));
+      renderTasks();
+    }
+    function renderTasks() {
+      const total = state.tasks.length;
+      const done = state.tasks.filter(t => t.done).length;
+      document.getElementById('taskProgressTxt').textContent = `${done} / ${total} geregeld`;
+      document.getElementById('taskProgFill').style.width = `${Math.round((done / Math.max(1, total)) * 100)}%`;
+
+      const filtered = state.tasks.filter(t => {
+        if (taskFilter === 'todo') return !t.done;
+        if (taskFilter === 'done') return t.done;
+        if (['Maarten', 'Alieke', 'Samen'].includes(taskFilter)) return t.who === taskFilter;
+        return true;
+      });
+
+      const phases = [...new Set(filtered.map(t => t.phase))];
+      const html = phases.map(ph => {
+        const items = filtered.filter(t => t.phase === ph);
+        return `
+          <div style="margin-bottom:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <h3 style="font-size:15.5px;">${esc(ph)}</h3>
+              <span class="badge badge-ochre">${items.filter(i=>i.done).length}/${items.length}</span>
+            </div>
+            <div style="border:1px solid var(--border); border-radius:12px; overflow:hidden; background:#fff;">
+              ${items.map(t => `
+                <div class="check-row ${t.done?'done':''}">
+                  <input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${t.id})" />
+                  <div class="check-text">${esc(t.text)}</div>
+                  <button class="assignee-btn" onclick="cycleTaskWho(${t.id})">${esc(t.who)}</button>
+                  <button class="btn btn-icon btn-danger" style="width:26px;height:26px;font-size:11px;" onclick="deleteTask(${t.id})">✕</button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('taskPhases').innerHTML = html || '<p class="subtitle">Geen taken in dit filter.</p>';
+    }
+    function toggleTask(id) {
+      const t = state.tasks.find(x => x.id === id);
+      if (t) { t.done = !t.done; saveState(); }
+    }
+    function cycleTaskWho(id) {
+      const order = ['Samen', 'Maarten', 'Alieke'];
+      const t = state.tasks.find(x => x.id === id);
+      if (t) { t.who = order[(order.indexOf(t.who) + 1) % order.length]; saveState(); }
+    }
+    function addTask() {
+      const text = document.getElementById('newTaskText').value.trim();
+      if (!text) return;
+      state.tasks.push({
+        id: Date.now(),
+        phase: document.getElementById('newTaskPhase').value,
+        text,
+        who: document.getElementById('newTaskWho').value,
+        done: false
+      });
+      document.getElementById('newTaskText').value = '';
+      saveState();
+      showToast('Taak toegevoegd');
+    }
+    function deleteTask(id) {
+      state.tasks = state.tasks.filter(x => x.id !== id);
+      saveState();
+    }
+
+    // --- RENDER BUDGET ---
+    function renderBudget() {
+      const b = state.budget;
+      document.getElementById('bCamp').value = b.camp;
+      document.getElementById('bFood').value = b.food;
+      document.getElementById('bFun').value = b.fun;
+      document.getElementById('bFuel').value = b.fuel;
+      document.getElementById('bPrep').value = b.prep;
+      document.getElementById('bBuffer').value = b.buffer;
+      document.getElementById('bIncome').value = b.income;
+      document.getElementById('bVacPay').value = b.vacPay;
+      document.getElementById('bFixed').value = b.fixed;
+      document.getElementById('bUtilComp').value = b.utilComp;
+
+      const nights = state.stops.reduce((s, x) => s + Number(x.nights || 0), 0);
+      document.getElementById('budNightsEcho').textContent = nights;
+
+      const tripTotal = (nights * (Number(b.camp) + Number(b.food) + Number(b.fun))) + Number(b.fuel) + Number(b.prep) + Number(b.buffer);
+      const homeIn = Number(b.income) + Number(b.vacPay) + (3 * Number(b.utilComp));
+      const homeOut = 3 * Number(b.fixed);
+      const homeNet = homeIn - homeOut;
+      const saveNeeded = Math.max(0, tripTotal - homeNet);
+
+      document.getElementById('budTripTotal').textContent = fmtEur(tripTotal);
+      document.getElementById('budTripSub').textContent = `${nights} nachten + brandstof, voorbereiding & buffer`;
+      document.getElementById('budHomeNet').textContent = (homeNet >= 0 ? '+ ' : '− ') + fmtEur(Math.abs(homeNet));
+      document.getElementById('budSaveNeeded').textContent = fmtEur(saveNeeded);
+    }
+    function saveBudget() {
+      state.budget = {
+        camp: Number(document.getElementById('bCamp').value) || 0,
+        food: Number(document.getElementById('bFood').value) || 0,
+        fun: Number(document.getElementById('bFun').value) || 0,
+        fuel: Number(document.getElementById('bFuel').value) || 0,
+        prep: Number(document.getElementById('bPrep').value) || 0,
+        buffer: Number(document.getElementById('bBuffer').value) || 0,
+        income: Number(document.getElementById('bIncome').value) || 0,
+        vacPay: Number(document.getElementById('bVacPay').value) || 0,
+        fixed: Number(document.getElementById('bFixed').value) || 0,
+        utilComp: Number(document.getElementById('bUtilComp').value) || 0
+      };
+      saveState();
+    }
+    function fmtEur(n) { return '€ ' + Math.round(n).toLocaleString('nl-NL'); }
+
+    // --- RENDER HUISBEWARING ---
+    function renderContract() {
+      const c = state.contract;
+      document.getElementById('hbOwners').value = c.owners;
+      document.getElementById('hbAddress').value = c.address;
+      document.getElementById('hbKeeper').value = c.keeper;
+      document.getElementById('hbKeeperContact').value = c.keeperContact;
+      document.getElementById('hbStart').value = c.start;
+      document.getElementById('hbEnd').value = c.end;
+      document.getElementById('hbCost').value = c.cost;
+      document.getElementById('hbLandlord').value = c.landlord;
+      document.getElementById('hbEmergency').value = c.emergency;
+      document.getElementById('hbNotes').value = c.notes;
+
+      document.getElementById('contractPreview').innerHTML = `
+        <strong>Hoofdhuurders:</strong> ${esc(c.owners)} (${esc(c.address)})<br/>
+        <strong>Huisbewaarder:</strong> ${esc(c.keeper || '[Nog in te vullen]')}<br/>
+        <strong>Periode:</strong> ${esc(c.start)} t/m ${esc(c.end)} (onder voorbehoud van schriftelijke toestemming ${esc(c.landlord)})<br/>
+        <strong>Vergoeding:</strong> € ${Number(c.cost || 0)} per maand — uitsluitend ter dekking van werkelijke verbruikskosten (gas, water, elektra, internet), zonder winstoogmerk.<br/>
+        <strong>Afspraken:</strong> ${esc(c.notes)}
+      `;
+    }
+    function saveContract() {
+      state.contract = {
+        owners: document.getElementById('hbOwners').value,
+        address: document.getElementById('hbAddress').value,
+        keeper: document.getElementById('hbKeeper').value,
+        keeperContact: document.getElementById('hbKeeperContact').value,
+        start: document.getElementById('hbStart').value,
+        end: document.getElementById('hbEnd').value,
+        cost: Number(document.getElementById('hbCost').value) || 0,
+        landlord: document.getElementById('hbLandlord').value,
+        emergency: document.getElementById('hbEmergency').value,
+        notes: document.getElementById('hbNotes').value
+      };
+      saveState();
+    }
+
+    // --- PRINT ROADBOOK & CONTRACT ---
+    function printRoadbook() {
+      let cursor = new Date(START_DATE_STR + 'T12:00:00');
+      const rows = state.stops.map((s, i) => {
+        const st = new Date(cursor.getTime());
+        const en = addDays(st, Number(s.nights || 1));
+        cursor = en;
+        return `<tr><td>${i+1}</td><td>${fmtShortDate(st)} – ${fmtShortDate(en)} (Wk ${getISOWeek(st)})</td><td><strong>${esc(s.name)}</strong> (${esc(s.country)})</td><td>${s.nights} n.</td><td>${esc(s.notes)}</td></tr>`;
+      }).join('');
+
+      const kipGearKg = state.gear.filter(g => g.loc === 'kip').reduce((s, g) => s + Number(g.kg || 0), 0);
+      const totalKip = Number(state.kipCurb) + kipGearKg;
+      const openTasks = state.tasks.filter(t => !t.done).slice(0, 14).map(t => `<li>[ ] <strong>${esc(t.phase)}:</strong> ${esc(t.text)} (${esc(t.who)})</li>`).join('');
+
+      document.getElementById('print-area').innerHTML = `
+        <div class="print-page">
+          <div class="print-header">
+            <div><h1 style="font-size:20px;margin:0;">Veldgids Voorjaar ’27 — Roadbook</h1><div>Maarten, Alieke, Abel &amp; Fieke • Kip 40T Expeditie</div></div>
+            <div style="text-align:right;font-size:11px;">Vertrek: wo 7 april 2027<br/>Uitdraai: ${new Date().toLocaleDateString('nl-NL')}</div>
+          </div>
+          <h3 style="margin:8px 0 6px;">1. Route-overzicht</h3>
+          <table class="print-table">
+            <thead><tr><th>#</th><th>Periode</th><th>Bestemming</th><th>Nachten</th><th>Notities</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+          <h3 style="margin:12px 0 6px;">2. Kip 40T Gewicht &amp; Veiligheid</h3>
+          <p>Leeggewicht: <strong>${state.kipCurb} kg</strong> • Belading in Kip: <strong>${kipGearKg} kg</strong> • Totaal Kip: <strong>${totalKip} kg</strong> (Max: ${state.kipMax} kg).</p>
+          <h3 style="margin:12px 0 6px;">3. Noodnummers Dashboardkastje (Invullen vóór vertrek)</h3>
+          <table class="print-table">
+            <tr><th>Europees Alarmnummer</th><td>112</td><th>ANWB Alarmcentrale</th><td>+31 70 314 14 14</td></tr>
+            <tr><th>Reisverzekering / Polisnr.</th><td>______________________</td><th>Zorgverzekeraar (EHIC)</th><td>______________________</td></tr>
+            <tr><th>Huisbewaarder NL</th><td>${esc(state.contract.keeper || '______________________')}</td><th>Noodcontact NL</th><td>${esc(state.contract.emergency || '______________________')}</td></tr>
+          </table>
+          <h3 style="margin:12px 0 6px;">4. Openstaande Draaiboek-acties</h3>
+          <ul style="margin:0;padding-left:18px;font-size:11px;">${openTasks || '<li>Alles is afgevinkt!</li>'}</ul>
+        </div>
+      `;
+      window.print();
+    }
+
+    function printContract() {
+      const c = state.contract;
+      document.getElementById('print-area').innerHTML = `
+        <div class="print-page">
+          <div class="print-header">
+            <div><h1 style="font-size:19px;margin:0;">OVEREENKOMST TIJDELIJKE HUISBEWARING</h1><div>Tijdelijk verblijf zonder winstoogmerk tijdens reis</div></div>
+            <div style="font-size:11px;">Datum: ${new Date().toLocaleDateString('nl-NL')}</div>
+          </div>
+          <p><strong>Ondergetekenden:</strong></p>
+          <div class="contract-box">
+            <strong>1. Hoofdhuurders:</strong> ${esc(c.owners)}, wonende te ${esc(c.address)}.<br/>
+            <strong>2. Huisbewaarder:</strong> ${esc(c.keeper || '__________________________________')}, bereikbaar via ${esc(c.keeperContact || '_______________________')}.
+          </div>
+          <p><strong>Komen het volgende overeen:</strong></p>
+          <ol style="line-height:1.6;">
+            <li><strong>Periode &amp; Doel:</strong> De huisbewaarder past tijdelijk op de woning aan ${esc(c.address)} van <strong>${esc(c.start)}</strong> tot en met <strong>${esc(c.end)}</strong> gedurende de tijdelijke afwezigheid (reis) van de hoofdhuurders.</li>
+            <li><strong>Toestemming Verhuurder:</strong> Deze overeenkomst geldt uitsluitend met voorafgaande schriftelijke toestemming van <strong>${esc(c.landlord)}</strong>. De huisbewaarder kan geen zelfstandige huurbescherming of woonrechten ontlenen aan deze periode en ontruimt de woning uiterlijk op de einddatum.</li>
+            <li><strong>Verbruikskosten (geen huurwinst):</strong> De huisbewaarder betaalt geen huurwinst, maar een maandelijks voorschot van <strong>€ ${Number(c.cost || 0)}</strong> per maand ter dekking van het daadwerkelijke verbruik van gas, water, elektriciteit en internet. Bij aanvang en einde worden de meterstanden gezamenlijk genoteerd en gefotografeerd.</li>
+            <li><strong>Zorgplicht &amp; Afspraken:</strong> De huisbewaarder draagt zorg voor de woning en inventaris als een goed huisvader. Aanvullende afspraken: ${esc(c.notes)}.</li>
+            <li><strong>Verzekering &amp; Noodcontact:</strong> De huisbewaarder beschikt over een eigen aansprakelijkheidsverzekering (AVP). Bij calamiteiten in Nederland kan direct contact worden opgenomen met: <strong>${esc(c.emergency)}</strong>.</li>
+          </ol>
+          <div class="contract-box">
+            <strong>Meterstanden bij sleuteloverdracht (7 april 2027):</strong><br/>
+            Elektra: ____________ &nbsp;&nbsp; Gas: ____________ &nbsp;&nbsp; Water: ____________ &nbsp;&nbsp; Aantal sleutels: _____
+          </div>
+          <div class="sig-grid">
+            <div><strong>Hoofdhuurders</strong><div class="sig-line">${esc(c.owners)}</div></div>
+            <div><strong>Huisbewaarder</strong><div class="sig-line">${esc(c.keeper || 'Naam &amp; handtekening')}</div></div>
+          </div>
+        </div>
+      `;
+      window.print();
+    }
+
+    // --- SUPABASE LIVE SYNC ---
+    function getSyncCfg() {
+      try { return JSON.parse(localStorage.getItem(SYNC_CFG_KEY) || '{}'); } catch { return {}; }
+    }
+    function openSyncModal() {
+      const cfg = getSyncCfg();
+      document.getElementById('sbUrl').value = cfg.url || '';
+      document.getElementById('sbKey').value = cfg.key || '';
+      document.getElementById('sbRoom').value = cfg.room || 'schraa-voorjaar-27';
+      updateSyncUI();
+      document.getElementById('syncModal').classList.add('open');
+    }
+    function closeSyncModal() {
+      document.getElementById('syncModal').classList.remove('open');
+    }
+    function updateSyncUI(statusMode, detailMsg) {
+      const cfg = getSyncCfg();
+      const dot = document.getElementById('syncDot');
+      const lbl = document.getElementById('syncLabel');
+      const det = document.getElementById('syncStatusDetail');
+      if (!cfg.url || !cfg.key) {
+        dot.className = 'sync-dot';
+        lbl.textContent = 'App & Sync';
+        if (det) det.textContent = 'Lokaal opgeslagen (nog niet gekoppeld aan Supabase).';
+        return;
+      }
+      if (statusMode === 'error') {
+        dot.className = 'sync-dot error';
+        lbl.textContent = 'Offline / Fout';
+        if (det) det.textContent = detailMsg || 'Geen verbinding met Supabase — wijzigingen staan veilig lokaal.';
+      } else {
+        dot.className = 'sync-dot synced';
+        lbl.textContent = 'Live Sync';
+        if (det) det.textContent = detailMsg || `Gekoppeld aan gezinscode "${cfg.room || 'schraa-voorjaar-27'}".`;
+      }
+    }
+
+    function sbHeaders(key, extra) {
+      const h = Object.assign({ 'apikey': key }, extra || {});
+      // Nieuwe sb_publishable_ keys zijn geen JWT en geven 401 in de Authorization header.
+      // Alleen oude legacy anon keys (begint met eyJ) mogen in Authorization: Bearer.
+      if (key && key.startsWith('eyJ')) {
+        h['Authorization'] = `Bearer ${key}`;
+      }
+      return h;
+    }
+
+    function normalizeSbUrl(raw) {
+      let u = (raw || '').trim().replace(/\/+$/, '');
+      if (u && !/^https?:\/\//i.test(u)) u = 'https://' + u;
+      u = u.replace(/\/rest\/v1.*$/i, '');
+      return u;
+    }
+
+    async function saveAndConnectSync() {
+      const url = normalizeSbUrl(document.getElementById('sbUrl').value);
+      const key = document.getElementById('sbKey').value.trim();
+      const room = document.getElementById('sbRoom').value.trim() || 'schraa-voorjaar-27';
+      if (!url || !key) {
+        showToast('Vul zowel Project URL als Publishable Key in');
+        return;
+      }
+      document.getElementById('sbUrl').value = url;
+      localStorage.setItem(SYNC_CFG_KEY, JSON.stringify({ url, key, room }));
+      const pulled = await pullFromCloud(false);
+      if (pulled === 'empty') {
+        await pushToCloud(true);
+      } else if (pulled === 'ok') {
+        showToast('Verbonden & gegevens opgehaald! ✓');
+      } else {
+        showToast('Verbinden mislukt — zie statusmelding');
+      }
+    }
+
+    function scheduleCloudPush() {
+      const cfg = getSyncCfg();
+      if (!cfg.url || !cfg.key) return;
+      clearTimeout(syncTimer);
+      syncTimer = setTimeout(() => pushToCloud(false), 1100);
+    }
+
+    function formatSbError(status, bodyText) {
+      if (status === 401 || status === 403) {
+        return `Fout (${status}): Sleutel geweigerd. Gebruik de Publishable key (sb_publishable_...) uit Supabase.`;
+      }
+      if (status === 404 || /veldgids_state/i.test(bodyText || '')) {
+        return `Fout (${status}): Tabel "veldgids_state" niet gevonden. Voer het SQL-script eerst uit in Supabase SQL Editor.`;
+      }
+      return `Fout (${status}): ${(bodyText || 'Onbekende fout').slice(0, 120)}`;
+    }
+
+    async function pushToCloud(notify) {
+      const cfg = getSyncCfg();
+      if (!cfg.url || !cfg.key) { if (notify) showToast('Koppel eerst Supabase'); return; }
+      try {
+        const res = await fetch(`${normalizeSbUrl(cfg.url)}/rest/v1/veldgids_state`, {
+          method: 'POST',
+          headers: sbHeaders(cfg.key, {
+            'Content-Type': 'application/json',
+            'Prefer': 'resolution=merge-duplicates'
+          }),
+          body: JSON.stringify({
+            room_id: cfg.room || 'schraa-voorjaar-27',
+            data: state,
+            updated_at: new Date().toISOString()
+          })
+        });
+        if (!res.ok) {
+          const txt = await res.text().catch(() => '');
+          throw new Error(formatSbError(res.status, txt));
+        }
+        updateSyncUI('synced', `Laatst gesynct om ${new Date().toLocaleTimeString('nl-NL', {hour:'2-digit', minute:'2-digit'})}`);
+        if (notify) showToast('Opgeslagen in de cloud ☁️');
+      } catch (err) {
+        const msg = err && err.message && err.message.startsWith('Fout (')
+          ? err.message
+          : 'Kan Supabase niet bereiken — controleer je Project URL en internetverbinding.';
+        updateSyncUI('error', msg);
+        if (notify) showToast('Cloud sync mislukt (zie status)');
+      }
+    }
+
+    async function pullFromCloud(notify) {
+      const cfg = getSyncCfg();
+      if (!cfg.url || !cfg.key) { if (notify) showToast('Koppel eerst Supabase'); return 'none'; }
+      try {
+        const room = encodeURIComponent(cfg.room || 'schraa-voorjaar-27');
+        const res = await fetch(`${normalizeSbUrl(cfg.url)}/rest/v1/veldgids_state?room_id=eq.${room}&select=data,updated_at`, {
+          headers: sbHeaders(cfg.key)
+        });
+        if (!res.ok) {
+          const txt = await res.text().catch(() => '');
+          throw new Error(formatSbError(res.status, txt));
+        }
+        const rows = await res.json();
+        if (!rows || rows.length === 0) {
+          updateSyncUI('synced', 'Verbonden! Eerste versie wordt geüpload...');
+          return 'empty';
+        }
+        const remote = rows[0].data;
+        if (remote && (!state.updatedAt || (remote.updatedAt || 0) >= state.updatedAt || notify)) {
+          state = Object.assign(deepClone(DEFAULT_STATE), remote);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          renderAll();
+        }
+        updateSyncUI('synced', `Live gesynct (${new Date().toLocaleTimeString('nl-NL', {hour:'2-digit', minute:'2-digit'})})`);
+        if (notify) showToast('Nieuwste versie opgehaald ✓');
+        return 'ok';
+      } catch (err) {
+        const msg = err && err.message && err.message.startsWith('Fout (')
+          ? err.message
+          : 'Kan Supabase niet bereiken — controleer je Project URL en internetverbinding.';
+        updateSyncUI('error', msg);
+        if (notify) showToast('Ophalen mislukt (zie status)');
+        return 'err';
+      }
+    }
+
+    // --- BACKUP & RESET ---
+    function exportBackup() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `veldgids-27-backup-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+    }
+    function importBackup(evt) {
+      const file = evt.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          state = Object.assign(deepClone(DEFAULT_STATE), JSON.parse(e.target.result));
+          saveState();
+          showToast('Backup succesvol hersteld!');
+        } catch {
+          showToast('Ongeldig backup-bestand');
+        }
+      };
+      reader.readAsText(file);
+    }
+    function resetDefaults() {
+      if (!confirm('Weet je zeker dat je alle aanpassingen wilt resetten naar de beginwaarden?')) return;
+      state = deepClone(DEFAULT_STATE);
+      saveState();
+      showToast('Teruggezet naar beginwaarden');
+    }
+
+    function esc(str) {
+      return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function renderAll() {
+      renderOverview();
+      renderRoute();
+      renderKip();
+      renderPackList();
+      renderTasks();
+      renderBudget();
+      renderContract();
+    }
+
+    // --- INIT & SERVICE WORKER ---
+    renderAll();
+    updateSyncUI();
+    if (getSyncCfg().url) pullFromCloud(false);
+    window.addEventListener('focus', () => { if (getSyncCfg().url) pullFromCloud(false); });
+    setInterval(renderOverview, 60000);
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
